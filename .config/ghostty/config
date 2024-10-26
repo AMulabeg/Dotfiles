@@ -1,0 +1,6 @@
+theme = tokyonight
+font-family = "JetBrains Mono NL"
+font-size = "18"
+
+cursor-style = block
+window-decoration = false
