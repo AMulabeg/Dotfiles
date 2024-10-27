@@ -25,7 +25,7 @@ for_window [class="^.*"] border pixel 0
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
-exec --no-startup-id sleep 1 && feh --bg-fill /home/amulabeg/Downloads/wp8880225-4k-laptop-anime-wallpapers.jpg
+exec --no-startup-id sleep 1 && feh --bg-fill /home/amulabeg/Downloads/1234664.jpg
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
@@ -90,7 +90,7 @@ bindsym $mod+Return exec ghostty
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id rofi -show drun window \
+bindsym $mod+space exec --no-startup-id rofi -show drun window \
 		-theme ~/.config/rofi-collection/material/material.rasi
 
 # A more modern dmenu replacement is rofi:
@@ -143,7 +143,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+d focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
