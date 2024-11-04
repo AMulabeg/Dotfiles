@@ -105,4 +105,5 @@ unsetopt BEEP
 
 
 
+
 [ -f "/home/amulabeg/.ghcup/env" ] && . "/home/amulabeg/.ghcup/env" # ghcup-env
