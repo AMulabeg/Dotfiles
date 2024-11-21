@@ -2,6 +2,7 @@ export EDITOR="nvim"
 
 tmux="TERM=screen-256color-bce tmux"
 
+export XDG_CURRENT_DESKTOP=sway
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(fzf --zsh)"
@@ -26,8 +27,8 @@ alias kys="sudo shutdown -h now"
 alias todolist='ultralist list'
 alias f="fastfetch"
 alias b="brew"
-alias ls="eza --color=always --long --git --icons=never --no-time --no-user --no-permissions"
-alias oo="cd ~/Documents/Obsidian Vault"
+alias ls="eza --color=always --git --icons=never --no-time --no-user --no-permissions"
+alias oo="cd ~/Documents/Obsidian"
 alias "pirates"="ani-cli one piece"
 alias y="yazi"
 # ---- UltraList ----
