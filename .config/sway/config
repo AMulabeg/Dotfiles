@@ -5,7 +5,7 @@ set $mod Mod4
 font pango:JetBrains Mono NF 15
 
 
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 1
 
 exec --no-startup-id dex --autostart --environment sway
 output * background /home/amulabeg/Downloads/496977-final.png fill
@@ -19,12 +19,12 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% 
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle 
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle 
+# bindsym XF86AudioMicMute exec --no-startup-id firefox https://x.com
 bindsym XF86MonBrightnessUp exec brightnessctl s +5% 
 bindsym XF86MonBrightnessDown exec brightnessctl s 5%- 
 
 bindsym $mod+up exec brightnessctl --device='tpacpi::kbd_backlight' s 2
 bindsym $mod+down exec brightnessctl --device='tpacpi::kbd_backlight' s 0
-
 bindsym F3 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% 
 bindsym F2 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% 
 bindsym F4 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle 
@@ -35,12 +35,12 @@ floating_modifier $mod
 
 assign [app_id="firefox"] workspace number 1
 assign [app_id="ghostty"] workspace number 2
-assign [instance="vesktop"] workspace number 4
+assign [instance="discord"] workspace number 4
 assign [instance="spotify"] workspace number 5
 
 for_window [app_id="ghostty"] focus
 for_window [app_id="firefox"] focus
-for_window [class="vesktop"] focus
+for_window [class="discord"] focus
 for_window [class="Spotify"] focus
 
 bindsym $mod+Return exec ghostty
@@ -72,7 +72,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+a focus parent
 
-input " 1267:32:Elan_Touchpad" {
+input "1267:32:Elan_Touchpad" {
      accel_profile "flat"
      pointer_accel 0.8
      dwt enabled
