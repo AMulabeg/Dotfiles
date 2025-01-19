@@ -5,11 +5,11 @@ set $mod Mod4
 font pango:JetBrains Mono NF 15
 
 
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 5
 
 exec --no-startup-id dex --autostart --environment sway
 output * background /home/amulabeg/Downloads/496977-final.png fill
-
+exec_always autotiling 
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --nostartup-id blueman-applet
 exec_always nm-applet --indicator
@@ -44,9 +44,10 @@ bindsym $mod+Return exec ghostty
 
 bindsym $mod+q kill
 
-bindsym $mod+space exec --no-startup-id rofi -show drun window \
-		-theme ~/.config/rofi-collection/material/material.rasi
+# bindsym $mod+space exec --no-startup-id rofi -show drun window \
+# 		-theme ~/.config/rofi-collection/material/material.rasi
 
+bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
 bindsym $mod+m exec --no-startup-id grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
 bindsym $mod+n exec --no-startup-id grim -g "$(slurp)" -| wl-copy 
 
@@ -75,7 +76,7 @@ input "1267:32:Elan_Touchpad" {
      dwt enabled
      tap enabled
      natural_scroll enabled
-      middle_emulation enabled
+     middle_emulation enabled
   }
 
 bindsym $mod+1 workspace number 1
@@ -124,6 +125,6 @@ mode "resize" {
 }
 
 bar {
-  swaybar_command waybar
+ swaybar_command waybar
 
 }

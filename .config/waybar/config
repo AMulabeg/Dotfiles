@@ -32,12 +32,12 @@
 
     "cpu": {
         "interval": 1,
-        "format": "CPU: {usage}%",
+        "format": " :{usage}%",
     },
 
     "memory": {
         "interval": 1,
-        "format": "Mem:{}%"
+        "format": " :{}%"
     },
 
     "backlight": {
