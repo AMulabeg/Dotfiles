@@ -31,8 +31,10 @@ alias ls="eza --color=always --git --icons=never --no-time --no-user --no-permis
 alias oo="cd ~/Documents/Obsidian"
 alias "pirates"="ani-cli one piece"
 alias y="yazi"
-# ---- UltraList ----
 alias s='sesh connect $(sesh list | fzf)'
+
+
+
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
