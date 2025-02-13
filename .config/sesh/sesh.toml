@@ -1,0 +1,7 @@
+[default_session]
+startup_command = "yazi"
+preview_command = "eza --all --git --icons --color=always {}"
+
+[OnePiece]
+startup_command = "./OnePieceTCG/1.27a_Linux/Builds_Linux/OPTCGSim.x86_64"
+

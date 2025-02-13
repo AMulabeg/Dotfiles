@@ -22,11 +22,8 @@ alias weather='curl wttr.in/Berlin'
 alias fonts='wezterm ls-fonts --list-system | fzf'
 alias givepassword='security find-generic-password -wa'
 alias ipaddress='ifconfig | grep -A 5 en0 | grep "inet " | cut -f2 -d " "' # User configuration export MANPATH="/usr/local/man:$MANPATH"
-alias moo="cowsay I use macOS btw"
 alias kys="sudo shutdown -h now"
-alias todolist='ultralist list'
-alias f="fastfetch"
-alias b="brew"
+alias f="fastfetch -c neofetch"
 alias ls="eza --color=always --git --icons=never --no-time --no-user --no-permissions"
 alias oo="cd ~/Documents/Obsidian"
 alias "pirates"="ani-cli one piece"
@@ -110,3 +107,11 @@ unsetopt BEEP
 
 
 [ -f "/home/amulabeg/.ghcup/env" ] && . "/home/amulabeg/.ghcup/env" # ghcup-env
+
+# pnpm
+export PNPM_HOME="/home/amulabeg/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

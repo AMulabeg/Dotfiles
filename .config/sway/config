@@ -6,14 +6,16 @@ font pango:JetBrains Mono NF 15
 
 
 for_window [class="^.*"] border pixel 5
+client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
+
+output * background /home/amulabeg/Pictures/one.jpg fill
 
 exec --no-startup-id dex --autostart --environment sway
-output * background /home/amulabeg/Downloads/496977-final.png fill
-exec_always autotiling 
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-exec --nostartup-id blueman-applet
+exec --no-startup-id blueman-applet
+
 exec_always nm-applet --indicator
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+exec_always autotiling 
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% 
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% 
@@ -40,14 +42,11 @@ for_window [app_id="firefox"] focus
 for_window [class="discord"] focus
 for_window [class="Spotify"] focus
 
-bindsym $mod+Return exec ghostty
+bindsym $mod+Return exec alacritty
 
 bindsym $mod+q kill
-
-# bindsym $mod+space exec --no-startup-id rofi -show drun window \
-# 		-theme ~/.config/rofi-collection/material/material.rasi
-
-bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh 
 bindsym $mod+m exec --no-startup-id grim $(xdg-user-dir PICTURES)/$(date +'%s_grim.png')
 bindsym $mod+n exec --no-startup-id grim -g "$(slurp)" -| wl-copy 
 
@@ -102,6 +101,7 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 bindsym $mod+d exec --no-startup-id ~/.config/sway/toggle_display.sh
+
 bindsym $mod+Shift+c reload
 bindsym $mod+r mode "resize"
 bindsym $mod+u swaylock
@@ -123,8 +123,13 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
+# Notification Daemon
+exec swaync
 
+# Toggle control center
+bindsym $mod+Shift+n exec swaync-client -t -sw
 bar {
+
  swaybar_command waybar
 
 }
