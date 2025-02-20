@@ -8,7 +8,7 @@ font pango:JetBrains Mono NF 15
 for_window [class="^.*"] border pixel 5
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
 
-output * background /home/amulabeg/Pictures/one.jpg fill
+output * background /home/amulabeg/Downloads/656136-final.png fill
 
 exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -55,6 +55,7 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
+bindsym $mod+t exec firefox
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
@@ -105,6 +106,8 @@ bindsym $mod+d exec --no-startup-id ~/.config/sway/toggle_display.sh
 bindsym $mod+Shift+c reload
 bindsym $mod+r mode "resize"
 bindsym $mod+u swaylock
+
+
 
 
 mode "resize" {

@@ -9,7 +9,7 @@ padding.y = 10
 decorations = "Buttonless"
 
 [font]
-normal.family = "JetBrains Mono NL"
+normal.family = "CommitMono"
 normal.style = "Regular"
 size = 19
 

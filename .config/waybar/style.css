@@ -1,5 +1,5 @@
 * {
-  font-family: JetBrainsMono NF;
+  font-family: CommitMono;
   font-size: 16px;
   margin: 0;
   padding: 0;
@@ -16,11 +16,11 @@ window#waybar {
 }
 
 window#waybar.hidden {
-  opacity: 0.2;
+  opacity: 0;
 }
 
 #window {
-  font-family: "Sarasa Gothic SC", sans-serif;
+  font-family: "CommitMono", sans-serif;
 }
 
 #clock {
@@ -30,6 +30,9 @@ window#waybar.hidden {
   padding: 0px 10px;
   border-radius: 4px;
 }
+#temperature {
+  background-color: transparent;
+}
 
 #custom-power {
   font-weight: bold;
@@ -38,7 +41,7 @@ window#waybar.hidden {
   padding: 5px 10px;
   border-radius: 4px;
 }
-
+#temperature,
 #battery,
 #cpu,
 #memory,
@@ -54,10 +57,10 @@ window#waybar.hidden {
   background-color: #3b3f51;
   color: #ffffff;
 }
-
-#battery.charging {
-  background-color: #b5b4e2;
-}
+/**/
+/* #battery.charging { */
+/*   background-color: #b5b4e2; */
+/* } */
 
 #battery.critical:not(.charging) {
   background-color: #b54f4f;
@@ -81,7 +84,7 @@ window#waybar.hidden {
 }
 
 #tray {
-  background-color: #b5b4e2;
+  /* background-color: #b5b4e2; */
   color: #282a36;
 }
 

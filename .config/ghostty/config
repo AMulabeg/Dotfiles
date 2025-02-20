@@ -1,5 +1,5 @@
 theme = tokyonight
-font-family = "JetBrainsMono NL"
+font-family = "CommitMono"
 font-size = "18"
 
 cursor-style = block

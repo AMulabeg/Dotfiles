@@ -17,7 +17,6 @@ if swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-3" and .active)' >/
     swaymsg workspace 4 output DP-3
     swaymsg workspace 5 output DP-3
     swaymsg workspace 6 output DP-3
-fi
 
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/dev/null && \
    swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-6" and .active)' >/dev/null; then
@@ -36,7 +35,6 @@ elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' 
     swaymsg workspace 4 output DP-5
     swaymsg workspace 5 output DP-5
     swaymsg workspace 6 output DP-5
-fi
 
    
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-2" and .active)' >/dev/null; then
@@ -47,14 +45,12 @@ elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-2" and .active)' 
     swaymsg workspace 2 output DP-2
     swaymsg workspace 3 output DP-2
 
-
     swaymsg output eDP-1 disable
 
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-4" and .active)' >/dev/null; then
     # If DP-3 is connected, disable eDP-1 and enable DP-3
     swaymsg output eDP-1 disable
     swaymsg output DP-4 mode 1920x1080@119.993Hz enable
-
 
 else
     # If DP-3 is not connected, enable eDP-1 and disable DP-3
