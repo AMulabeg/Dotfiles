@@ -1,11 +1,10 @@
 exec xss-lock -- swaylock
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DEKSTOP=sway 
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DEKSTOP=swayfx
 set $mod Mod4
 
 font pango:JetBrains Mono NF 15
 
-
-for_window [class="^.*"] border pixel 5
+for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
 
 output * background /home/amulabeg/Dotfiles/.config/wallpapers/656136-final_1.png fill
@@ -17,6 +16,7 @@ exec --no-startup-id blueman-applet
 exec_always nm-applet --indicator
 exec_always autotiling 
 
+gaps inner 2
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% 
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% 
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle 
@@ -107,7 +107,8 @@ bindsym $mod+Shift+c reload
 bindsym $mod+r mode "resize"
 bindsym $mod+u swaylock
 
-
+# Swayfx
+corner_radius 10
 
 
 mode "resize" {

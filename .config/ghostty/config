@@ -1,6 +1,6 @@
 theme = tokyonight
 font-family = "CommitMono"
-font-size = "18"
 
-cursor-style = block
+font-size = "18"
+confirm-close-surface = false
 window-decoration = true
