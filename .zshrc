@@ -65,12 +65,7 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
-#  setup fzf theme 
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796 \
---color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6 \
---color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
-[ -f "/Users/amulabeg/.ghcup/env" ] && source "/Users/amulabeg/.ghcup/env" 
+
 TRANSIENT_PROMPT=`starship module character`
 function zle-line-init() {
 	emulate -L zsh

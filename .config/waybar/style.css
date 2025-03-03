@@ -10,7 +10,7 @@
 }
 
 window#waybar {
-  background-color: rgba(43, 44, 52, 0.8);
+  background: #1e1e1e;
   color: #ffffff;
   transition: background-color 0.5s;
 }
@@ -25,7 +25,7 @@ window#waybar.hidden {
 
 #clock {
   min-width: 140px;
-  background: #3b3f51;
+  background: #1e1e1e;
   color: #ffffff;
   padding: 0px 10px;
   border-radius: 4px;
@@ -54,7 +54,7 @@ window#waybar.hidden {
 #keyboard-state,
 #scratchpad {
   padding: 5px 8px;
-  background-color: #3b3f51;
+  background-color: #1e1e1e;
   color: #ffffff;
 }
 /**/
