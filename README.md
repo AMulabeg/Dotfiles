@@ -2,4 +2,5 @@ Very simple Sway and i3 setup (Hyprland setup coming soon).
 
 If you want to use my setup, I suggest downloading Stow and just doing stow . in the cloned repo.
 
-![image](https://github.com/user-attachments/assets/ce6e9b21-9a00-4d5f-9450-f78a1c59e1c0)
+
+![realrice](https://github.com/user-attachments/assets/591ae73a-6b4a-459f-99cc-351ec4318890)
