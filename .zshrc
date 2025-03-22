@@ -3,6 +3,7 @@ export EDITOR="nvim"
 tmux="TERM=screen-256color-bce tmux"
 
 export XDG_CURRENT_DESKTOP=sway
+
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(fzf --zsh)"
@@ -15,6 +16,8 @@ autoload -U compinit && compinit
 alias fsb='~/scripts/fsb.sh'
 alias fshow='~/scripts/fshow.sh'
 source ~/scripts/fzf-git.sh
+
+export PATH="$HOME/.emacs.d/bin:$PATH" 
 
 
 # Aliases
@@ -110,3 +113,7 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

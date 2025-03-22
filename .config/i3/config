@@ -90,9 +90,8 @@ bindsym $mod+Return exec wezterm
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+space exec --no-startup-id rofi -show drun window \
-		-theme ~/.config/rofi-collection/material/material.rasi
 
+bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh 
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
