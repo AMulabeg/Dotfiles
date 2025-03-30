@@ -1,0 +1,81 @@
+"source ~/.vimrc
+"
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+
+" Do incremental searching.
+set incsearch
+set clipboard+=unnamed
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+"" --- DEFAULT SETTINGS ABOVE ---
+
+Plug 'easymotion/vim-easymotion'
+Plug 'preservim/nerdtree'
+
+set number relativenumber
+set ideajoin
+set easymotion
+set surround
+
+"" Leader key
+let mapleader = " "
+
+"" Easy exit mode
+inoremap jk <esc>
+inoremap kj <esc>
+
+"" Easymotion
+map <Leader><Leader> <Plug>(easymotion-f)
+
+"" Zen Mod
+nmap <c-z> :action ToggleDistractionFreeMode<CR>
+
+"" Navigation
+nmap <Leader>j :action PreviousTab<CR>
+nmap <Leader>k :action NextTab<CR>
+
+nmap <Leader>sv :action SplitVertically<CR>
+nmap <Leader>sh :action SplitHorizontally<CR>
+nmap <Leader>sx :action Unsplit<CR>
+nmap <Leader>sm :action MoveEditorToOppositeTabGroup<CR>
+
+sethandler <c-j> a:vim
+sethandler <c-k> a:vim
+
+nmap <c-h> <c-w>h
+nmap <c-l> <c-w>l
+nmap <c-j> <c-w>j
+nmap <c-k> <c-w>k
+
+
+"" NERDTreeNavigation
+"" Commands:
+""  Ctrl-n  Opens NERDTree window
+""  q       Close the NERDTree window
+""  o       Open files, directories and bookmarks
+""  go      Open selected file, but leave cursor in NERDTree
+""  <C-J>
+""  <C-K>
+""  R       Refresh directories
+""  m       Show nerdtree menu
+set NERDTree
+
+map <Leader>ee :NERDTree<CR>
+
+let g:NERDTreeMapActivateNode='j'
+let g:NERDTreeMApJumpParent='k'
+":NERDTreeFocus
+":NERDTreeToggle
+":NERDTreeClose
+":NERDTreeFind
+":NERDTreeRefreshRoot
+map <Leader>ff <action>(com.mituuz.fuzzier.Fuzzier)
+map <Leader>mf <action>(com.mituuz.fuzzier.FuzzyMover)
+map <Leader>gf <action>(com.mituuz.fuzzier.FuzzierVCS)
+map <Leader>pf <action>(com.mituuz.fuzzier.FuzzyGrep)
