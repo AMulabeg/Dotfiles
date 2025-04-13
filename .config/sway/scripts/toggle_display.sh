@@ -1,40 +1,40 @@
 #!/bin/bash
 
-if swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-3" and .active)' >/dev/null && \
-   swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-4" and .active)' >/dev/null; then
+if swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/dev/null && \
+   swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-6" and .active)' >/dev/null; then
     # If DP-3 is connected, disable eDP-1 and enable DP-3 and DP-4
     swaymsg output eDP-1 disable
 
     # Configure DP-4 (left monitor)
-    swaymsg output DP-4 position 0 0
-    swaymsg output DP-4 mode 1920x1080@119.880Hz enable
-    swaymsg workspace 1 output DP-4
-    swaymsg workspace 2 output DP-4
-    swaymsg workspace 3 output DP-4
-
-    swaymsg output DP-3 position 1920 0
-    swaymsg output DP-3 mode 1920x1080@59.940Hz enable
-    swaymsg workspace 4 output DP-3
-    swaymsg workspace 5 output DP-3
-    swaymsg workspace 6 output DP-3
-
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/dev/null && \
-   swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-6" and .active)' >/dev/null; then
-    swaymsg output eDP-1 disable
-
-    # Configure DP-4 (left monitor)
     swaymsg output DP-6 position 0 0
-    swaymsg output DP-6 mode 1920x1080@119.880Hz enable
+    swaymsg output DP-6 mode 1920x1080@164.966Hz enable
     swaymsg workspace 1 output DP-6
     swaymsg workspace 2 output DP-6
     swaymsg workspace 3 output DP-6
 
-    # Configure DP-3 (right monitor)
     swaymsg output DP-5 position 1920 0
     swaymsg output DP-5 mode 1920x1080@59.940Hz enable
     swaymsg workspace 4 output DP-5
     swaymsg workspace 5 output DP-5
     swaymsg workspace 6 output DP-5
+
+elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-7" and .active)' >/dev/null && \
+   swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-8" and .active)' >/dev/null; then
+    swaymsg output eDP-1 disable
+
+    # Configure DP-4 (left monitor)
+    swaymsg output DP-8 position 0 0
+    swaymsg output DP-8 mode 1920x1080@119.880Hz enable
+    swaymsg workspace 1 output DP-8
+    swaymsg workspace 2 output DP-8
+    swaymsg workspace 3 output DP-8
+
+    # Configure DP-3 (right monitor)
+    swaymsg output DP-7 position 1920 0
+    swaymsg output DP-7 mode 1920x1080@59.940Hz enable
+    swaymsg workspace 4 output DP-7
+    swaymsg workspace 5 output DP-7
+    swaymsg workspace 6 output DP-7
 
    
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-2" and .active)' >/dev/null; then

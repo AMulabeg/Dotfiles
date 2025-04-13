@@ -1,13 +1,12 @@
 exec xss-lock -- swaylock
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DEKSTOP=swayfx
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DEKSTOP=sway
 set $mod Mod4
-
 font pango:JetBrains Mono NF 15
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
 
-output * background /home/amulabeg/Dotfiles/.config/wallpapers/810777.jpg fill
+output * background /home/amulabeg/Dotfiles/.config/wallpapers/buble.png fill
 
 exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -70,9 +69,9 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+a focus parent
 
-input "1267:32:Elan_Touchpad" {
+input "2:7:SynPS/2_Synaptics_TouchPad" {
      accel_profile "flat"
-     pointer_accel 0.8
+     pointer_accel 1.0
      dwt enabled
      tap enabled
      natural_scroll enabled
@@ -110,7 +109,7 @@ bindsym $mod+r mode "resize"
 bindsym $mod+u swaylock
 
 # Swayfx
-corner_radius 10
+#corner_radius 10
 
 
 mode "resize" {
