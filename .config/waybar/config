@@ -11,6 +11,7 @@
         "memory",
         "temperature",
         "backlight",
+        "power-profiles-daemon",
         "pulseaudio",
         "battery",
         "network",
@@ -38,13 +39,34 @@
 
     "memory": {
         "interval": 1,
-        "format": " :{}%"
+        "format": ":{}%"
     },
 
     "backlight": {
         "format": "{icon} {percent}%",
         "format-icons": [""]
     },
+ "power-profiles-daemon": {
+
+  "format": " {icon} ",
+
+  "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+
+  "tooltip": true,
+
+  "format-icons": {
+
+  "default": "Performance Mode",
+
+  "performance": "Performance Mode",
+
+  "balanced": "Balanaced Mode",
+
+  "power-saver": "Eco Mode"
+
+  },
+
+  }, 
     "temperature": {
         "format": "󰈸:{temperatureC}°C"
     },
@@ -55,8 +77,8 @@
             "critical": 15
         },
         "interval": 1,
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
+        "format": "{icon} {capacity}% {time}",
+        "format-charging": "󰂄 {capacity}% {time}",
         "format-icons": ["", "", "", "", ""]
     },
 
