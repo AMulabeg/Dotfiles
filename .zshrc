@@ -1,7 +1,7 @@
 export EDITOR="nvim"
-export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
 export MOZ_ENABLE_WAYLAND=1
+export WLR_DRM_NO_ATOMIC=1
 
 
 tmux="TERM=screen-256color-bce tmux"

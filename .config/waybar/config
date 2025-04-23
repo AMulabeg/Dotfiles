@@ -39,7 +39,7 @@
 
     "memory": {
         "interval": 1,
-        "format": ":{}%"
+        "format": "RAM:{}%"
     },
 
     "backlight": {
@@ -77,14 +77,14 @@
             "critical": 15
         },
         "interval": 1,
-        "format": "{icon} {capacity}% {time}",
-        "format-charging": "󰂄 {capacity}% {time}",
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
         "format-icons": ["", "", "", "", ""]
     },
 
     "network": {
         "format-wifi": " ({signalStrength}%) {essid}",
-        "format-ethernet": "{ipaddr}/{cidr} 󰈀",
+        "format-ethernet": "Ethernet 󰈀",
         "tooltip-format": "{ifname} via {gwaddr} 󰯖",
         "format-linked": "{ifname} (No IP) 󰲐",
         "format-disconnected": "Disconnected ⚠"
@@ -102,14 +102,6 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
-    },
-
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
     },
 
     "tray": {

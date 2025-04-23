@@ -1,12 +1,13 @@
 exec xss-lock -- swaylock
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DEKSTOP=sway
+exec export WLR_DRM_NO_ATOMIC=1
 set $mod Mod4
 font pango:JetBrains Mono NF 15
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
 
-output * background /home/amulabeg/Dotfiles/.config/wallpapers/buble.png fill
+output * background /home/amulabeg/Dotfiles/.config/wallpapers/496977-final_1.png fill
 
 exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
@@ -109,7 +110,7 @@ bindsym $mod+r mode "resize"
 bindsym $mod+u swaylock
 
 # Swayfx
-#corner_radius 10
+corner_radius 10
 
 
 mode "resize" {
