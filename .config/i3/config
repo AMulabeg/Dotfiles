@@ -3,7 +3,7 @@ set $mod Mod4
 font pango:JetBrains Mono NF 15
 
 
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 1
 
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id sleep 1 && feh --bg-fill /home/amulabeg/Downloads/1234664.jpg

@@ -11,7 +11,6 @@
         "memory",
         "temperature",
         "backlight",
-        "power-profiles-daemon",
         "pulseaudio",
         "battery",
         "network",
@@ -46,27 +45,7 @@
         "format": "{icon} {percent}%",
         "format-icons": [""]
     },
- "power-profiles-daemon": {
 
-  "format": " {icon} ",
-
-  "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-
-  "tooltip": true,
-
-  "format-icons": {
-
-  "default": "Performance Mode",
-
-  "performance": "Performance Mode",
-
-  "balanced": "Balanaced Mode",
-
-  "power-saver": "Eco Mode"
-
-  },
-
-  }, 
     "temperature": {
         "format": "󰈸:{temperatureC}°C"
     },
