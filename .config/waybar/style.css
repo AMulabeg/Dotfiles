@@ -1,5 +1,5 @@
 * {
-  font-family: CommitMono;
+  font-family: JetBrains Mono;
   font-size: 21px;
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@ window#waybar.hidden {
 }
 
 #window {
-  font-family: "CommitMono", sans-serif;
+  font-family: "JetBrains Mono", sans-serif;
 }
 
 #clock {

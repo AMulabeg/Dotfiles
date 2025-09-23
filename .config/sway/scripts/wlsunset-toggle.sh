@@ -2,5 +2,5 @@
 if pidof wlsunset; then
    killall -9 wlsunset
 else
-   wlsunset #location here
+   wlsunset -l 52.48 -L 13.43
 fi

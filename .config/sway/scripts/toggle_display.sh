@@ -20,6 +20,14 @@ if swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/
 
     swaymsg output HDMI-A-1 position 0 0
 
+elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/dev/null; then
+    swaymsg output eDP-1 disable
+    swaymsg output DP-5 position 1920 0
+    swaymsg output DP-5 mode 1920x1080@120.000Hz enable
+    swaymsg workspace 1 output DP-5
+    swaymsg workspace 2 output DP-5
+    swaymsg workspace 3 output DP-5
+
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-7" and .active)' >/dev/null && \
    swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-8" and .active)' >/dev/null; then
     swaymsg output eDP-1 disable
@@ -46,7 +54,7 @@ elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-2" and .active)' 
     swaymsg workspace 6 output eDP-1
     swaymsg workspace 1 output DP-2
     swaymsg workspace 2 output DP-2
-    swaymsg workspace 3 output DP-2
+    swaymsg workspace 4 output DP-2
 
     swaymsg output eDP-1 disable
 
@@ -56,6 +64,13 @@ elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-4" and .active)' 
     # If DP-3 is connected, disable eDP-1 and enable DP-3
     swaymsg output eDP-1 disable
     swaymsg output DP-4 mode 1920x1080@119.993Hz enable
+
+elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-3" and .active)' >/dev/null; then
+    swaymsg output eDP-1 disable
+    swaymsg output DP-3 mode 3440x1440@99.982Hz enable
+    swaybg -i /home/amulabeg/Dotfiles/.config/wallpapers/ultrawide.jpg 
+    
+    
 
 else
     # If DP-3 is not connected, enable eDP-1 and disable DP-3

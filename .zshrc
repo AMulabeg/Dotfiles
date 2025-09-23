@@ -1,16 +1,18 @@
 export EDITOR="nvim"
 export XDG_SESSION_TYPE=wayland
-export MOZ_ENABLE_WAYLAND=1
-export WLR_DRM_NO_ATOMIC=1
+export XDG_CURRENT_DESKTOP=sway
+# export MOZ_ENABLE_WAYLAND=1
+# export WLR_DRM_NO_ATOMIC=1
 
 
+export PATH=$PATH:$(go env GOPATH)/bin
 tmux="TERM=screen-256color-bce tmux"
 
-export XDG_CURRENT_DESKTOP=sway
 
 eval "$(starship init zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(fzf --zsh)"
+
 # Plugins
 source ~/scripts/fzf-tab/fzf-tab.plugin.zsh
 source ~/scripts/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
@@ -21,7 +23,6 @@ alias fsb='~/scripts/fsb.sh'
 alias fshow='~/scripts/fshow.sh'
 source ~/scripts/fzf-git.sh
 
-export PATH="$HOME/.emacs.d/bin:$PATH" 
 
 
 # Aliases
@@ -33,9 +34,7 @@ alias kys="sudo shutdown -h now"
 alias f="fastfetch -c neofetch"
 alias ls="eza --color=always --git --icons=never --no-time --no-user --no-permissions"
 alias oo="cd ~/Documents/Obsidian"
-alias "pirates"="ani-cli one piece"
 alias y="yazi"
-alias s='sesh connect $(sesh list | fzf)'
 
 
 

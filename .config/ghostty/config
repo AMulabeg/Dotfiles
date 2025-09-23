@@ -1,7 +1,7 @@
-theme = gruber-darker
-#font-family = "CommitMono"
+theme = Gruber Darker
+# font-family = "CommitMono"
 
-font-family = "Maple Mono Medium"
+# font-family = "Maple Mono Medium"
 
 font-size = "18"
 confirm-close-surface = false
