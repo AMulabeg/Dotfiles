@@ -1,8 +1,8 @@
 export EDITOR="nvim"
 export XDG_SESSION_TYPE=wayland
 export XDG_CURRENT_DESKTOP=sway
-# export MOZ_ENABLE_WAYLAND=1
-# export WLR_DRM_NO_ATOMIC=1
+export MOZ_ENABLE_WAYLAND=1
+export WLR_DRM_NO_ATOMIC=1
 
 
 export PATH=$PATH:$(go env GOPATH)/bin
@@ -35,6 +35,7 @@ alias f="fastfetch -c neofetch"
 alias ls="eza --color=always --git --icons=never --no-time --no-user --no-permissions"
 alias oo="cd ~/Documents/Obsidian"
 alias y="yazi"
+alias l='eza -lah'
 
 
 

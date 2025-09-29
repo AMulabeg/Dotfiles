@@ -2,21 +2,18 @@ exec xss-lock -- swaylock
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DEKSTOP=sway
 exec export WLR_DRM_NO_ATOMIC=1
 exec systemctl --user import-environment
+
 set $mod Mod4
 font pango:JetBrains Mono NF 15
 include ./keybindings
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
-# exec ulauncher --hide-window 
-# output * background /home/amulabeg/Dotfiles/.config/wallpapers/1313919.jpg fill
 output * background /home/amulabeg/Dotfiles/.config/wallpapers/GzD5tsuboAAJVQv.jpeg fill
+seat seat0 xcursor_theme Bibata-Modern-Classic 24
 
 exec --no-startup-id dex --autostart --environment sway
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id blueman-applet
-
-
 
 exec_always nm-applet --indicator
 exec_always autotiling 
@@ -24,7 +21,7 @@ exec_always autotiling
 exec --no-startup-id ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false
 
 exec_always --no-startup-id pkill waybar
-#gaps inner 2
+
 assign [app_id="firefox"] workspace number 1
 assign [app_id="brave"] workspace number 1
 assign [instance="discord"] workspace number 4
@@ -37,7 +34,6 @@ for_window [class="discord"] focus
 for_window [class="Spotify"] focus
 for_window [class="IntelliJ"] focus
 
-# bindsym $mod+Return exec ghostty
 
 input "2:7:SynPS/2_Synaptics_TouchPad" {
      accel_profile "flat"
@@ -52,11 +48,6 @@ input "1133:45081:Logitech_Wireless_Mouse_MX_Master_2S" {
      natural_scroll enabled
      accel_profile "flat"
 }
-
-
-
-# Swayfx
-# corner_radius 10
 
 
 mode "resize" {
