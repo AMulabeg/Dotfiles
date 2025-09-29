@@ -28,14 +28,16 @@ source ~/scripts/fzf-git.sh
 # Aliases
 alias weather='curl wttr.in/Berlin'
 alias fonts='wezterm ls-fonts --list-system | fzf'
-alias givepassword='security find-generic-password -wa'
-alias ipaddress='ifconfig | grep -A 5 en0 | grep "inet " | cut -f2 -d " "' # User configuration export MANPATH="/usr/local/man:$MANPATH"
+alias givepassword='security find-generic-password -wa' alias ipaddress='ifconfig | grep -A 5 en0 | grep "inet " | cut -f2 -d " "' # User configuration export MANPATH="/usr/local/man:$MANPATH"
 alias kys="sudo shutdown -h now"
 alias f="fastfetch -c neofetch"
 alias ls="eza --color=always --git --icons=never --no-time --no-user --no-permissions"
 alias oo="cd ~/Documents/Obsidian"
 alias y="yazi"
 alias l='eza -lah'
+alias p="paru"
+alias v="nvim"
+alias t="tmux"
 
 
 
