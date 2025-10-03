@@ -9,11 +9,12 @@ include ./keybindings
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
-output * background /home/amulabeg/Dotfiles/.config/wallpapers/GzD5tsuboAAJVQv.jpeg fill
+output * background ~/Dotfiles/.config/wallpapers/anime-girl-kimono-red-eyes-hd-wallpaper-uhdpaper.com-98@5@g.jpg fill
 seat seat0 xcursor_theme Bibata-Modern-Classic 24
 
 exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id blueman-applet
+exec --no-startup-id wlsunset -l 52.48 -L 13.43
 
 exec_always nm-applet --indicator
 exec_always autotiling 
@@ -47,6 +48,14 @@ input "1133:45081:Logitech_Wireless_Mouse_MX_Master_2S" {
      pointer_accel 1.0
      natural_scroll enabled
      accel_profile "flat"
+}
+
+input "9639:64108:KSN_M600_V2_Mouse" {
+
+  pointer_accel 1.0
+  natural_scroll enable
+  accel_profile "flat"
+
 }
 
 

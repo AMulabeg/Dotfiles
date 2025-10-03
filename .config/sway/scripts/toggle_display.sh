@@ -20,6 +20,14 @@ if swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/
 
     swaymsg output HDMI-A-1 position 0 0
 
+elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-6" and .active)' >/dev/null; then
+    swaymsg output eDP-1 disable
+    swaymsg output DP-6 position 1920 0
+    swaymsg output DP-6 mode 1920x1080@120.000Hz enable
+    swaymsg workspace 1 output DP-6
+    swaymsg workspace 2 output DP-6
+    swaymsg workspace 3 output DP-6
+
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/dev/null; then
     swaymsg output eDP-1 disable
     swaymsg output DP-5 position 1920 0
@@ -27,6 +35,7 @@ elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' 
     swaymsg workspace 1 output DP-5
     swaymsg workspace 2 output DP-5
     swaymsg workspace 3 output DP-5
+
 
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-7" and .active)' >/dev/null && \
    swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-8" and .active)' >/dev/null; then
