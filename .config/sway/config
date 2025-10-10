@@ -9,7 +9,8 @@ include ./keybindings
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
-output * background ~/Dotfiles/.config/wallpapers/anime-girl-kimono-red-eyes-hd-wallpaper-uhdpaper.com-98@5@g.jpg fill
+output * background ~/Dotfiles/.config/wallpapers/W8tnZ2g.png fill
+
 seat seat0 xcursor_theme Bibata-Modern-Classic 24
 
 exec --no-startup-id dex --autostart --environment sway

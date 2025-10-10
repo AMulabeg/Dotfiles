@@ -77,7 +77,7 @@ elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-4" and .active)' 
 elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-3" and .active)' >/dev/null; then
     swaymsg output eDP-1 disable
     swaymsg output DP-3 mode 3440x1440@99.982Hz enable
-    swaybg -i /home/amulabeg/Dotfiles/.config/wallpapers/ultrawide.jpg 
+    swaybg -i /home/amulabeg/Dotfiles/.config/wallpapers/4kzen.jpg 
     
     
 
