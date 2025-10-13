@@ -1,5 +1,5 @@
 {
-    "spacing": 6,
+  "spacing": 6,
    "layer": "bottom",
     "position": "top",
     "modules-left": [
@@ -20,8 +20,19 @@
         "tray"
     ],
 
+  "sway/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "一",
+      "2": "二",
+      "3": "三",
+      "4": "四",
+      "5": "五",
+      "6": "六",
+      "default": "〇"    }
+  },
     "custom/power": {
-        "format": "Amer",
+        "format": "Linux",
         "tooltip-format": "power manager",
         "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Shutdown' 'shutdown -h now' -b 'Restart' 'shutdown -r now' -b 'Logout' 'swaymsg exit' -b 'Hibernate' 'systemctl hibernate' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
     },

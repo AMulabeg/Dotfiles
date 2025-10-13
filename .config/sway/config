@@ -53,7 +53,7 @@ input "1133:45081:Logitech_Wireless_Mouse_MX_Master_2S" {
 
 input "9639:64108:KSN_M600_V2_Mouse" {
 
-  pointer_accel 1.0
+  pointer_accel 0.4
   natural_scroll enable
   accel_profile "flat"
 
