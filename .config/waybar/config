@@ -50,7 +50,7 @@
 
     "memory": {
         "interval": 1,
-        "format": "Memory:{}%"
+        "format": " :{}%"
     },
 
     "backlight": {
