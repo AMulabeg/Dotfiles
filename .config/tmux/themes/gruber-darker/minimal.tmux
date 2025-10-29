@@ -25,7 +25,7 @@ accent_session="#5f8787"       # muted teal for session name
 use_arrow=$(get_tmux_option "@minimal-tmux-use-arrow" true)
 larrow="$("$use_arrow" && get_tmux_option "@minimal-tmux-left-arrow" "")"
 rarrow="$("$use_arrow" && get_tmux_option "@minimal-tmux-right-arrow" "")"
-status=$(get_tmux_option "@minimal-tmux-status" "bottom")
+# status=$(get_tmux_option "@minimal-tmux-status" "top")
 justify="left"
 
 # prefix indicator (muted)

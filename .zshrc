@@ -6,6 +6,7 @@ export WLR_DRM_NO_ATOMIC=1
 
 
 export PATH=$PATH:$(go env GOPATH)/bin
+export PATH="$HOME/.cargo/bin:$PATH"
 tmux="TERM=screen-256color-bce tmux"
 
 

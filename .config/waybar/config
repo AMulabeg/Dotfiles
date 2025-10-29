@@ -16,7 +16,7 @@
         "battery",
         "network",
         "clock",
-        "custom/power",
+        "custom/pomodoro",
         "tray"
     ],
 
@@ -31,11 +31,6 @@
       "6": "六",
       "default": "〇"    }
   },
-    "custom/power": {
-        "format": "Linux",
-        "tooltip-format": "power manager",
-        "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Shutdown' 'shutdown -h now' -b 'Restart' 'shutdown -r now' -b 'Logout' 'swaymsg exit' -b 'Hibernate' 'systemctl hibernate' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
-    },
 
     "clock": {
         "interval": 30,
@@ -97,7 +92,13 @@
 
     "tray": {
         "spacing": 10
-    }
+    },
 
-    
+  "custom/pomodoro": {
+	"format": "{}",
+	"return-type": "json",
+	"exec": "waybar-module-pomodoro",
+	"on-click": "waybar-module-pomodoro toggle",
+	"on-click-right": "waybar-module-pomodoro reset",
+}
 }

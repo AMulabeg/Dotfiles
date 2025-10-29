@@ -9,7 +9,7 @@ include ./keybindings
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
-output * background ~/Dotfiles/.config/wallpapers/W8tnZ2g.png fill
+output * background ~/Dotfiles/.config/wallpapers/samurai-anime-girl-katana-kimono-sci-fi-hd-wallpaper-uhdpaper.com-311@5@d.jpg fill
 
 seat seat0 xcursor_theme Bibata-Modern-Classic 24
 
@@ -25,6 +25,7 @@ exec --no-startup-id ghostty --gtk-single-instance=true --quit-after-last-window
 exec_always --no-startup-id pkill waybar
 
 assign [app_id="firefox"] workspace number 1
+assign [app_id="chromium"] workspace number 1
 assign [app_id="brave"] workspace number 1
 assign [instance="discord"] workspace number 4
 assign [instance="spotify"] workspace number 5
@@ -53,7 +54,7 @@ input "1133:45081:Logitech_Wireless_Mouse_MX_Master_2S" {
 
 input "9639:64108:KSN_M600_V2_Mouse" {
 
-  pointer_accel 0.4
+  pointer_accel 0.1
   natural_scroll enable
   accel_profile "flat"
 

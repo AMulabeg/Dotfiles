@@ -1,5 +1,6 @@
 * {
-  font-family: JetBrains Mono;
+
+  font-family: "JetBrainsMono Nerd Font", monospace;
   font-size: 21px;
   margin: 0;
   padding: 0;
@@ -34,13 +35,6 @@ window#waybar.hidden {
   background-color: transparent;
 }
 
-#custom-power {
-  font-weight: bold;
-  color: #ffffff;
-  background: #536067;
-  padding: 5px 10px;
-  border-radius: 4px;
-}
 #temperature,
 #battery,
 #cpu,

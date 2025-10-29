@@ -1,6 +1,6 @@
 format = """
 [$directory](bold cyan)($git_branch$git_state$git_status$git_metrics)
-$time $hostname $username $python[»](bold green) """
+$time $username $python[»](bold green) """
 
 [git_branch]
 style = "bold green"

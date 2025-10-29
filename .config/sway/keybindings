@@ -20,7 +20,7 @@ bindsym $mod+n exec --no-startup-id grim -g "$(slurp)" -| wl-copy
 # Opening Apps
 # bindsym $mod+Return exec foot
 bindsym $mod+Return exec ghostty
-bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-4/launcher.sh
+bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
 bindsym $mod+t exec chromium 
 
 # Navigation
@@ -81,4 +81,4 @@ bindsym $mod+Shift+a exec --no-startup-id ~/.config/sway/scripts/wlsunset-toggle
 bindsym $mod+b exec --no-startup-id ~/.config/sway/scripts/kill_bar.sh
 
 bindsym $mod+Shift+b exec --no-startup-id foot -e bluetui
-bindsym $mod+Shift+w exec --no-startup-id foot -e nmtui
+bindsym $mod+Shift+w exec --no-startup-id foot -e wifitui
