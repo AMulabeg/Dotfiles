@@ -41,6 +41,7 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
+bindsym $mod+p floating toggle
 
 # General
 bindsym $mod+q kill
@@ -82,3 +83,4 @@ bindsym $mod+b exec --no-startup-id ~/.config/sway/scripts/kill_bar.sh
 
 bindsym $mod+Shift+b exec --no-startup-id foot -e bluetui
 bindsym $mod+Shift+w exec --no-startup-id foot -e wifitui
+

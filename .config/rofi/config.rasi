@@ -83,7 +83,7 @@ configuration {
 
 	/*---------- Misc setting ----------*/
 	terminal: "rofi-sensible-terminal";
-	font: "JetBrins Mono 12";
+	font: "JetBrins Mono 17";
 	sort: false;
 	threads: 0;
 	click-to-exit: true;

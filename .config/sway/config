@@ -9,7 +9,7 @@ include ./keybindings
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
-output * background ~/Dotfiles/.config/wallpapers/samurai-anime-girl-katana-kimono-sci-fi-hd-wallpaper-uhdpaper.com-311@5@d.jpg fill
+output * background ~/Dotfiles/.config/wallpapers/chainsawman.jpg fill
 
 seat seat0 xcursor_theme Bibata-Modern-Classic 24
 
