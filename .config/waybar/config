@@ -5,7 +5,6 @@
     "modules-left": [
         "sway/workspaces",
         "sway/mode",
-        "sway/scratchpad",
     ],
     "modules-right": [
         "cpu",
@@ -16,7 +15,6 @@
         "battery",
         "network",
         "clock",
-        "custom/pomodoro",
         "tray"
     ],
 
@@ -94,11 +92,5 @@
         "spacing": 10
     },
 
-  "custom/pomodoro": {
-	"format": "{}",
-	"return-type": "json",
-	"exec": "waybar-module-pomodoro",
-	"on-click": "waybar-module-pomodoro toggle",
-	"on-click-right": "waybar-module-pomodoro reset",
-}
+}}
 }

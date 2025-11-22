@@ -9,18 +9,20 @@ include ./keybindings
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
-output * background ~/Dotfiles/.config/wallpapers/chainsawman.jpg fill
+output * background ~/Dotfiles/.config/wallpapers/anime-girl-kimono-red-eyes-hd-wallpaper-uhdpaper.com-98@5@g.jpg fill
 
-seat seat0 xcursor_theme Bibata-Modern-Classic 24
+# seat seat0 xcursor_theme Bibata-Modern-Classic 24
 
 exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id blueman-applet
 exec --no-startup-id wlsunset -l 52.48 -L 13.43
 
-exec_always nm-applet --indicator
-exec_always autotiling 
+exec nm-applet --indicator
+exec autotiling 
 
 exec --no-startup-id ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false
+
+exec --no-startup-id chromium --use-gl=desktop --enable-features=VaapiVideoDecoder
 
 exec_always --no-startup-id pkill waybar
 

@@ -18,10 +18,11 @@ bindsym $mod+n exec --no-startup-id grim -g "$(slurp)" -| wl-copy
 
 
 # Opening Apps
-# bindsym $mod+Return exec foot
-bindsym $mod+Return exec ghostty
+bindsym $mod+Return exec foot
 bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
-bindsym $mod+t exec chromium 
+bindsym $mod+t exec floorp
+
+
 
 # Navigation
 bindsym $mod+h focus left

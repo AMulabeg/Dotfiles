@@ -23,7 +23,7 @@ autoload -U compinit && compinit
 alias fsb='~/scripts/fsb.sh'
 alias fshow='~/scripts/fshow.sh'
 source ~/scripts/fzf-git.sh
-
+alias hx="helix"
 
 
 # Aliases
