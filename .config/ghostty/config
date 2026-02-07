@@ -3,7 +3,7 @@ theme = Gruber Darker
 
 # font-family = "Maple Mono Medium"
 
-font-size = "18"
+font-size = "20"
 confirm-close-surface = false
 window-decoration = true
 # background-opacity = 0.90

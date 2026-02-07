@@ -1,5 +1,5 @@
-* {
 
+* {
   font-family: "JetBrainsMono Nerd Font", monospace;
   font-size: 21px;
   margin: 0;
@@ -10,6 +10,7 @@
   text-shadow: none;
 }
 
+/* Bar */
 window#waybar {
   background: #1e1e1e;
   color: #ffffff;
@@ -20,25 +21,12 @@ window#waybar.hidden {
   opacity: 0;
 }
 
-#window {
-  font-family: "JetBrains Mono", sans-serif;
-}
-
-#clock {
-  min-width: 140px;
-  background: #1e1e1e;
-  color: #ffffff;
-  padding: 0px 10px;
-  border-radius: 4px;
-}
-#temperature {
-  background-color: transparent;
-}
-
-#temperature,
+/* Generic module styling */
+#clock,
 #battery,
 #cpu,
 #memory,
+#temperature,
 #backlight,
 #network,
 #pulseaudio,
@@ -51,34 +39,58 @@ window#waybar.hidden {
   background-color: #1e1e1e;
   color: #ffffff;
 }
-/**/
-/* #battery.charging { */
-/*   background-color: #b5b4e2; */
-/* } */
 
+/* Clock */
+#clock {
+  min-width: 140px;
+  padding: 0px 10px;
+  border-radius: 4px;
+}
+
+/* Temperature transparent */
+#temperature {
+  background-color: transparent;
+}
+
+/* Workspaces */
+#workspaces button {
+  padding: 5px 8px;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+#workspaces button:hover {
+  background-color: #3a3a3a;
+}
+
+#workspaces button.active {
+  background-color: #3a3a3a;
+  /* box-shadow: inset 0 -3px #ffffff; */
+}
+
+#workspaces button.urgent {
+  background-color: #b54f4f;
+}
+
+/* Battery */
 #battery.critical:not(.charging) {
   background-color: #b54f4f;
   animation: blink 0.5s linear infinite alternate;
 }
 
-@keyframes blink {
-  to {
-    background-color: #ffffff;
-    color: #3b3f51;
-  }
-}
-
+/* Network */
 #network.disconnected {
   background-color: #b54f4f;
 }
 
+/* Audio */
 #pulseaudio.muted {
   background-color: #3b3f51;
   color: #b5b4e2;
 }
 
+/* Tray */
 #tray {
-  /* background-color: #b5b4e2; */
   color: #282a36;
 }
 
@@ -92,28 +104,16 @@ window#waybar.hidden {
   color: #ffffff;
 }
 
+/* Idle inhibitor */
 #idle_inhibitor.activated {
   background-color: #b5b4e2;
   color: #3b3f51;
 }
 
-#workspaces button,
-#mode {
-  padding: 5px 8px;
-  background-color: transparent;
-  color: #ffffff;
-}
-
-#workspaces button:hover,
-#workspaces button.focused {
-  background-color: #3a3a3a;
-  /* box-shadow: inset 0 -3px #ffffff; */
-}
-
-#workspaces button.urgent {
-  background-color: #b54f4f;
-}
-
-label:focus {
-  background-color: #000000;
+/* Blink animation */
+@keyframes blink {
+  to {
+    background-color: #ffffff;
+    color: #3b3f51;
+  }
 }

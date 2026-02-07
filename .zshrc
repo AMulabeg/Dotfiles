@@ -1,6 +1,7 @@
 export EDITOR="nvim"
 export XDG_SESSION_TYPE=wayland
-export XDG_CURRENT_DESKTOP=sway
+export XDG_CURRENT_DESKTOP=hyrland
+export XDG_DESKTOP_PORTAL=hyprland
 export MOZ_ENABLE_WAYLAND=1
 export WLR_DRM_NO_ATOMIC=1
 
@@ -76,7 +77,7 @@ _fzf_compgen_dir() {
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-TRANSIENT_PROMPT=`starship module character`
+# TRANSIENT_PROMPT=`starship module character`
 function zle-line-init() {
 	emulate -L zsh
 
@@ -111,7 +112,6 @@ unsetopt BEEP
 
 
 
-[ -f "/home/amulabeg/.ghcup/env" ] && . "/home/amulabeg/.ghcup/env" # ghcup-env
 
 # pnpm
 export PNPM_HOME="/home/amulabeg/.local/share/pnpm"
@@ -124,3 +124,5 @@ esac
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+[ -f "/home/amulabeg/.ghcup/env" ] && . "/home/amulabeg/.ghcup/env" # ghcup-env

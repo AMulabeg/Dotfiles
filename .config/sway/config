@@ -1,87 +1,100 @@
-exec xss-lock -- swaylock
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DEKSTOP=sway
-exec export WLR_DRM_NO_ATOMIC=1
-exec systemctl --user import-environment
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 set $mod Mod4
+set $wallpaper ~/.config/wallpapers/656136-final_1.png
+
+set $term wezterm
+set $browser firefox
+
+
+exec xss-lock -- swaylock
+
+exec --no-startup-id dex --autostart --environment sway
+# exec --no-startup-id blueman-applet
+exec --no-startup-id wlsunset -l 52.48 -L 13.43
+exec --no-startup-id swaync
+# exec --no-startup-id nm-applet --indicator
+exec --no-startup-id autotiling
+exec --no-startup-id ghostty --gtk-single-instance=true --quit-after-last-window-closed=false
+
+exec --no-startup-id {
+  firefox
+  zapzap
+  vesktop
+}
+
 font pango:JetBrains Mono NF 15
-include ./keybindings
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
-output * background ~/Dotfiles/.config/wallpapers/anime-girl-kimono-red-eyes-hd-wallpaper-uhdpaper.com-98@5@g.jpg fill
+output * background $wallpaper fill
 
-# seat seat0 xcursor_theme Bibata-Modern-Classic 24
 
-exec --no-startup-id dex --autostart --environment sway
-exec --no-startup-id blueman-applet
-exec --no-startup-id wlsunset -l 52.48 -L 13.43
+input "2:7:SynPS/2_Synaptics_TouchPad" {
+    accel_profile "adaptive"
+    pointer_accel 1.0
+    dwt enable
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+    scroll_factor 1.5        # makes scrolling faster
+}
 
-exec nm-applet --indicator
-exec autotiling 
+input "1133:45081:Logitech_Wireless_Mouse_MX_Master_2S" {
+    pointer_accel 0.7
+    natural_scroll enabled
+    accel_profile "flat"
+}
 
-exec --no-startup-id ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false
+input "9639:64108:KSN_M600_V2_Mouse" {
+    pointer_accel 0.1
+    natural_scroll enabled
+    accel_profile "flat"
+}
 
-exec --no-startup-id chromium --use-gl=desktop --enable-features=VaapiVideoDecoder
-
-exec_always --no-startup-id pkill waybar
 
 assign [app_id="firefox"] workspace number 1
 assign [app_id="chromium"] workspace number 1
 assign [app_id="brave"] workspace number 1
-assign [instance="discord"] workspace number 4
+assign [app_id="zapzap"] workspace number 3
+assign [app_id="vesktop"] workspace number 4
 assign [instance="spotify"] workspace number 5
 assign [instance="IntelliJ"] workspace number 3
 
 for_window [app_id="floorp"] focus
 for_window [app_id="thorium-browser"] focus
-for_window [class="discord"] focus
+for_window [app_id="zapzap"] focus
+for_window [app_id="vesktop"] focus
 for_window [class="Spotify"] focus
 for_window [class="IntelliJ"] focus
 
 
-input "2:7:SynPS/2_Synaptics_TouchPad" {
-     accel_profile "flat"
-     pointer_accel 1.0
-     dwt enable
-     tap enabled
-     natural_scroll enabled
-     middle_emulation enabled
-  }
-input "1133:45081:Logitech_Wireless_Mouse_MX_Master_2S" {
-     pointer_accel 1.0
-     natural_scroll enabled
-     accel_profile "flat"
-}
-
-input "9639:64108:KSN_M600_V2_Mouse" {
-
-  pointer_accel 0.1
-  natural_scroll enable
-  accel_profile "flat"
-
-}
-
-
 mode "resize" {
+    bindsym j resize shrink width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize shrink height 10 px or 10 ppt
+    bindsym semicolon resize grow width 10 px or 10 ppt
 
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
 
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
 }
-exec swaync
+
 
 bar {
-
- swaybar_command waybar
+  swaybar_command waybar
 }
+
+include ./keybindings
+
+# set $gnome-schema org.gnome.desktop.interface
+#
+# exec_always {
+#     gsettings set $gnome-schema gtk-theme 'AdwaitaDark'
+# }

@@ -3,8 +3,8 @@
    "layer": "bottom",
     "position": "top",
     "modules-left": [
-        "sway/workspaces",
-        "sway/mode",
+        "hyprland/workspaces",
+        "hyprland/mode",
     ],
     "modules-right": [
         "cpu",
@@ -18,7 +18,7 @@
         "tray"
     ],
 
-  "sway/workspaces": {
+  "hyprland/workspaces": {
     "format": "{icon}",
     "format-icons": {
       "1": "一",
