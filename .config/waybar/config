@@ -1,96 +1,52 @@
+
 {
-  "spacing": 6,
-   "layer": "bottom",
-    "position": "top",
-    "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/mode",
-    ],
-    "modules-right": [
-        "cpu",
-        "memory",
-        "temperature",
-        "backlight",
-        "pulseaudio",
-        "battery",
-        "network",
-        "clock",
-        "tray"
-    ],
+  "layer": "top",
+  "position": "top",
+  "height": 37,
+
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["temperature", "cpu", "network", "pulseaudio", "battery", "tray"],
 
   "hyprland/workspaces": {
-    "format": "{icon}",
-    "format-icons": {
-      "1": "一",
-      "2": "二",
-      "3": "三",
-      "4": "四",
-      "5": "五",
-      "6": "六",
-      "default": "〇"    }
+    "disable-scroll": true,
+    "all-outputs": true,
+    "format": "{name}"
   },
 
-    "clock": {
-        "interval": 30,
-        "format": "{:%a, %d %b %Y | %H:%M}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-    },
+  "clock": {
+    "format": "  {:%H:%M  •  %a %d %b}",
+    "tooltip-format": "{:%A, %d %B %Y}"
+  },
 
-    "cpu": {
-        "interval": 1,
-        "format": " :{usage}%",
-    },
+  "temperature": {
+    "hwmon-path": "/sys/class/hwmon/hwmon0/temp1_input",
+    "critical-threshold": 80,
+    "format": "  {temperatureC}°C"
+  },
 
-    "memory": {
-        "interval": 1,
-        "format": " :{}%"
-    },
+  "cpu": {
+    "format": "  {usage}%"
+  },
 
-    "backlight": {
-        "format": "{icon} {percent}%",
-        "format-icons": [""]
-    },
+  "network": {
+    "format-wifi": "  {signalStrength}%",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "⚠"
+  },
 
-    "temperature": {
-        "format": "󰈸:{temperatureC}°C"
-    },
+  "pulseaudio": {
+    "format": "  {volume}%",
+    "format-muted": "󰝟 muted"
+  },
 
-    "battery": {
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "interval": 1,
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-icons": ["", "", "", "", ""]
-    },
+  "battery": {
+    "format": "{icon}  {capacity}%",
+    "format-charging": "󰂄  {capacity}%",
+    "format-icons": ["", "", "", "", ""]
+  },
 
-    "network": {
-        "format-wifi": " ({signalStrength}%) {essid}",
-        "format-ethernet": "Ethernet 󰈀",
-        "tooltip-format": "{ifname} via {gwaddr} 󰯖",
-        "format-linked": "{ifname} (No IP) 󰲐",
-        "format-disconnected": "Disconnected ⚠"
-    },
-
-    "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-bluetooth": "{icon} {volume}%",
-        "format-muted": "{format_source}",
-        "format-source": " {volume}%",
-        "format-source-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
-    },
-
-    "tray": {
-        "spacing": 10
-    },
-
-}}
+  "tray": {
+    "spacing": 10
+  }
 }

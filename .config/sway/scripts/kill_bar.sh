@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if pidof waybar; then
-  killall -9 waybar
+if pidof quickshell; then
+  killall -9 quickshell
 else
-  waybar
+  quickshell
 fi

@@ -1,9 +1,10 @@
 export EDITOR="nvim"
 export XDG_SESSION_TYPE=wayland
-export XDG_CURRENT_DESKTOP=hyrland
+export XDG_CURRENT_DESKTOP=hyprland
 export XDG_DESKTOP_PORTAL=hyprland
 export MOZ_ENABLE_WAYLAND=1
 export WLR_DRM_NO_ATOMIC=1
+export OZONE_PLATFORM=wayland
 
 
 export PATH=$PATH:$(go env GOPATH)/bin
@@ -126,3 +127,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 [ -f "/home/amulabeg/.ghcup/env" ] && . "/home/amulabeg/.ghcup/env" # ghcup-env
+
+# opencode
+export PATH=/home/amulabeg/.opencode/bin:$PATH
