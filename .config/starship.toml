@@ -1,6 +1,6 @@
 format = """
 [$directory](bold cyan)($git_branch$git_state$git_status$git_metrics)
-$time $username $python[»](bold green) """
+$os$python[»](bold green) """
 
 [git_branch]
 style = "bold green"
@@ -69,7 +69,7 @@ disabled = true
 disabled = true
 
 [hostname]
-ssh_only = false
+ssh_only = true
 format = "[$hostname]($style)"
 style = "bold white"
 
@@ -82,3 +82,9 @@ format = "[$user]($style)"
 disabled = false
 format = "[$time]($style)"
 time_format = "%H:%M"
+
+[os]
+disabled = false
+format = "$symbol "
+symbols.Arch = "󰣇"
+
