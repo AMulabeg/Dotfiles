@@ -7,6 +7,7 @@ PanelWindow {
     id: notifCenter
     property bool open: false
     property var server
+    property var history: null
 
     anchors { top: true; right: true; bottom: true }
     implicitWidth: 380
@@ -60,12 +61,7 @@ PanelWindow {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        if (server && server.trackedNotifications) {
-                            // dismiss all - iterate by index since list changes
-                            while (server.trackedNotifications.count > 0) {
-                                server.trackedNotifications.get(0).dismiss()
-                            }
-                        }
+                        if (notifCenter.history) notifCenter.history.clear()
                     }
                     cursorShape: Qt.PointingHandCursor
                 }
@@ -86,11 +82,11 @@ PanelWindow {
             }
             clip: true
             spacing: 6
-            model: server ? server.trackedNotifications : null
+            model: notifCenter.history
 
             Text {
                 anchors.centerIn: parent
-                visible: !server || server.trackedNotifications.count === 0
+                visible: !notifCenter.history || notifCenter.history.count === 0
                 text: "\uf0f3\n\nNo notifications"
                 color: "#444444"
                 font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 13
@@ -99,7 +95,7 @@ PanelWindow {
 
             delegate: Rectangle {
                 required property var modelData
-                property var notification: modelData
+                property var notification: modelData  // plain JS object from ListModel
 
                 width: ListView.view.width
                 height: notifCol.implicitHeight + 20
@@ -112,8 +108,8 @@ PanelWindow {
                     width: 3
                     anchors { left: parent.left; top: parent.top; bottom: parent.bottom }
                     radius: 8
-                    color: notification.urgency === NotificationUrgency.Critical ? "#ff5555" :
-                           notification.urgency === NotificationUrgency.Normal    ? "#ffdd33" : "#444444"
+                    color: notification.urgency === 2 ? "#ff5555" :
+                           notification.urgency === 1 ? "#ffdd33" : "#444444"
                 }
 
                 Column {
@@ -151,7 +147,7 @@ PanelWindow {
                             anchors.verticalCenter: parent.verticalCenter
                             MouseArea {
                                 anchors.fill: parent
-                                onClicked: notification.dismiss()
+                                onClicked: notifCenter.history.remove(index)
                                 cursorShape: Qt.PointingHandCursor
                             }
                         }

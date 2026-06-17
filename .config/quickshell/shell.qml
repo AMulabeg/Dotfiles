@@ -1,6 +1,5 @@
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 import Quickshell.Services.SystemTray
@@ -10,8 +9,6 @@ import QtQuick
 ShellRoot {
 
     // ── Icon theme fix ───────────────────────────────────────────────────────
-    // battery-good only exists as -symbolic in Adwaita; SNI requests it at
-    // 100x100 causing a WARN. Symlink it into hicolor on first run.
     Process {
         id: iconFix
         running: true
@@ -28,6 +25,8 @@ ShellRoot {
     }
 
     // ── Notification server ──────────────────────────────────────────────────
+    ListModel { id: notifHistory }
+
     NotificationServer {
         id: notifServer
         keepOnReload: true
@@ -35,45 +34,23 @@ ShellRoot {
         bodySupported: true
         imageSupported: true
 
-        // CRITICAL: must set tracked=true or notification is discarded
         onNotification: notif => {
+            if (controlCenter.dnd) { notif.expire(); return }
             notif.tracked = true
-            bellSound.command = notif.urgency === NotificationUrgency.Critical
-                ? ["paplay", "/usr/share/sounds/freedesktop/stereo/bell.oga"]
-                : ["paplay", "/usr/share/sounds/freedesktop/stereo/message.oga"]
-            bellSound.running = true
+            notifHistory.insert(0, {
+                summary:  notif.summary  || "",
+                body:     notif.body     || "",
+                appName:  notif.appName  || "",
+                appIcon:  notif.appIcon  || "",
+                urgency:  notif.urgency
+            })
         }
     }
 
-    // Bell sound on notification
-    Process {
-        id: bellSound
-        command: ["paplay", "/usr/share/sounds/freedesktop/stereo/message.oga"]
-        running: false
-    }
-
-    NotificationCenter { id: notifCenter; server: notifServer }
+    NotificationCenter { id: notifCenter; server: notifServer; history: notifHistory }
     ControlCenter      { id: controlCenter; server: notifServer; osd: osd }
     NotificationPopups { server: notifServer }
     BluetoothCenter    { id: btCenter }
-
-    // ── Close panels when clicking outside (Hyprland-native focus grab) ───────
-    HyprlandFocusGrab {
-        id: focusGrab
-        active: controlCenter.open || notifCenter.open || btCenter.open
-        windows: {
-            const w = []
-            if (controlCenter.open) w.push(controlCenter)
-            if (notifCenter.open)   w.push(notifCenter)
-            if (btCenter.open)      w.push(btCenter)
-            return w
-        }
-        onCleared: {
-            controlCenter.open = false
-            notifCenter.open   = false
-            btCenter.open      = false
-        }
-    }
 
     // ── OSD indicator (volume / brightness) ──────────────────────────────────
     OsdIndicator { id: osd }
@@ -92,7 +69,7 @@ ShellRoot {
         id: bar
 
         anchors { top: true; left: true; right: true }
-        implicitHeight: 48  // Increased from 39 to 48
+        implicitHeight: 48
 
         WlrLayershell.namespace: "quickshell:bar"
         WlrLayershell.layer: WlrLayer.Top
@@ -108,6 +85,51 @@ ShellRoot {
 
         PwObjectTracker { objects: [Pipewire.defaultAudioSink] }
 
+        // ── Sway workspace state — polling-based ─────────────────────────────
+        ListModel { id: workspaceModel }
+        
+        // Process for polling workspaces
+        Process {
+            id: wsPollProc
+            command: ["sh", "-c", "swaymsg -t get_workspaces 2>/dev/null"]
+            running: false
+            stdout: SplitParser {
+                onRead: data => {
+                    try {
+                        const workspaces = JSON.parse(data)
+                        workspaceModel.clear()
+                        // Filter out scratchpad (num = -1) and sort by number
+                        const sorted = workspaces
+                            .filter(ws => ws.num !== -1)
+                            .sort((a,b) => a.num - b.num)
+                        for (const ws of sorted) {
+                            workspaceModel.append({
+                                num: ws.num,
+                                name: ws.name || String(ws.num),
+                                focused: ws.focused
+                            })
+                        }
+                    } catch(e) {
+                        // Silent fail - workspaces will show when sway responds
+                    }
+                }
+            }
+        }
+        
+        // Poll every second
+        Timer {
+            id: workspacePollTimer
+            interval: 1000
+            running: true
+            repeat: true
+            triggeredOnStart: true
+            onTriggered: {
+                if (!wsPollProc.running) {
+                    wsPollProc.running = true
+                }
+            }
+        }
+
         // ── Polled stats ─────────────────────────────────────────────────────
         property string cpuUsage:    "--%"
         property string tempVal:     "--°C"
@@ -119,12 +141,33 @@ ShellRoot {
         property string netSSID:     ""
         property string netType:     "none"
         property int    netStrength: 0
-        property string btIcon:      "\uf293"   // nf-fa-bluetooth
+        property string btIcon:      "\uf293"
         property string btLabel:     ""
         property bool   btOn:        false
         property bool   btConnected: false
         property string ramVal:      "--%"
-        property bool   audioOnBt:   false   // true when default audio sink is a BT device
+        property bool   audioOnBt:   false
+
+        // ── Focused monitor name (for ControlCenter) ─────────────────────────
+        property string focusedMonitorName: ""
+
+        Process {
+            id: swayMonitorProc
+            running: false
+            command: ["sh", "-c",
+                "swaymsg -t get_outputs 2>/dev/null | " +
+                "python3 -c \"import sys,json; outs=json.load(sys.stdin); " +
+                "[print(o['name']) for o in outs if o.get('focused')]\""
+            ]
+            stdout: SplitParser {
+                onRead: data => {
+                    const t = data.trim()
+                    if (t) bar.focusedMonitorName = t
+                }
+            }
+        }
+        Timer { interval: 5000; running: true; repeat: true; triggeredOnStart: true
+                onTriggered: swayMonitorProc.running = true }
 
         Process {
             id: cpuProc
@@ -170,11 +213,6 @@ ShellRoot {
 
         Process {
             id: netProc
-            // Outputs lines:
-            //   STRENGTH:<0-100>   (if wifi connected)
-            //   SSID:<name>        (if wifi connected)
-            //   ETHERNET           (if only ethernet is up)
-            //   DISCONNECTED       (if nothing)
             command: ["sh", "-c",
                 "ssid=$(iwgetid -r 2>/dev/null); " +
                 "if [ -n \"$ssid\" ]; then " +
@@ -193,26 +231,22 @@ ShellRoot {
                 "fi"
             ]
             running: false
-            property string pendingStrength: ""
             stdout: SplitParser {
                 onRead: data => {
                     const t = data.trim()
                     if (t.startsWith("STRENGTH:")) {
                         const pct = parseInt(t.slice(9))
-                        netProc.pendingStrength = pct + "%"
                         bar.netVal  = pct + "%"
                         bar.netType = "wifi"
-                        // Tiered WiFi signal strength — store pct so display can colour-code
                         bar.netStrength = pct
-                        // nf-md-wifi_strength_1/2/3/4 (󰤟 󰤢 󰤥 󰤨) — use strength bars
-                        bar.netIcon = pct >= 75 ? "\udb82\udd28"   // 󰤨 full
-                                    : pct >= 50 ? "\udb82\udd25"   // 󰤥 good
-                                    : pct >= 25 ? "\udb82\udd22"   // 󰤢 fair
-                                    :             "\udb82\udd1f"   // 󰤟 weak
+                        bar.netIcon = pct >= 75 ? "\udb82\udd28"
+                                    : pct >= 50 ? "\udb82\udd25"
+                                    : pct >= 25 ? "\udb82\udd22"
+                                    :             "\udb82\udd1f"
                     } else if (t.startsWith("SSID:")) {
                         bar.netSSID = t.slice(5)
                     } else if (t === "ETHERNET") {
-                        bar.netIcon = "󰈀"  // U+F796 nf-fa-ethernet
+                        bar.netIcon = "󰈀"
                         bar.netVal  = ""
                         bar.netSSID = "Ethernet"
                         bar.netType = "ethernet"
@@ -228,12 +262,10 @@ ShellRoot {
             }
         }
         Timer { interval: 5000; running: true; repeat: true; triggeredOnStart: true
-                onTriggered: { netProc.pendingStrength = ""; netProc.running = true } }
+                onTriggered: netProc.running = true }
 
-        // ── Bluetooth ────────────────────────────────────────────────────────
         Process {
             id: btProc
-            // Outputs: ON or OFF, then optionally CONNECTED:<name>
             command: ["sh", "-c",
                 "power=$(bluetoothctl show 2>/dev/null | awk '/Powered:/{print $2}'); " +
                 "if [ \"$power\" = 'yes' ]; then " +
@@ -249,26 +281,21 @@ ShellRoot {
                 onRead: data => {
                     const t = data.trim()
                     if (t === "ON") {
-                        bar.btOn = true
-                        bar.btConnected = false
-                        bar.btLabel = ""
-                        bar.btIcon = "\uf294"  // nf-mdi-bluetooth — powered on, no device
+                        bar.btOn = true; bar.btConnected = false
+                        bar.btLabel = ""; bar.btIcon = "\uf294"
                     } else if (t === "OFF") {
-                        bar.btOn = false
-                        bar.btConnected = false
-                        bar.btLabel = ""
-                        bar.btIcon = "\uf294"  // will be dimmed via color
+                        bar.btOn = false; bar.btConnected = false
+                        bar.btLabel = ""; bar.btIcon = "\uf294"
                     } else if (t.startsWith("CONNECTED:")) {
                         bar.btConnected = true
                         bar.btLabel = t.slice(10)
-                        bar.btIcon = "\uf293"  // nf-fa-bluetooth — active connection
+                        bar.btIcon = "\uf293"
                     }
                 }
             }
         }
         Timer { interval: 5000; running: true; repeat: true; triggeredOnStart: true; onTriggered: btProc.running = true }
 
-        // ── RAM ──────────────────────────────────────────────────────────────
         Process {
             id: ramProc
             command: ["sh", "-c", "free -m | awk '/^Mem:/{printf \"%d%%\", int($3/$2*100)}'"]
@@ -277,7 +304,6 @@ ShellRoot {
         }
         Timer { interval: 5000; running: true; repeat: true; triggeredOnStart: true; onTriggered: ramProc.running = true }
 
-        // ── Audio sink BT detection ──────────────────────────────────────────
         Process {
             id: audioSinkProc
             command: ["sh", "-c",
@@ -286,9 +312,7 @@ ShellRoot {
             ]
             running: false
             stdout: SplitParser {
-                onRead: data => {
-                    bar.audioOnBt = data.trim() === "BT"
-                }
+                onRead: data => { bar.audioOnBt = data.trim() === "BT" }
             }
         }
         Timer { interval: 3000; running: true; repeat: true; triggeredOnStart: true; onTriggered: audioSinkProc.running = true }
@@ -301,31 +325,71 @@ ShellRoot {
 
             // LEFT: Workspaces
             Row {
-                anchors { left: parent.left; leftMargin: 8; verticalCenter: parent.verticalCenter }  // Increased left margin
-                spacing: 4  // Increased from 2 to 4
+                anchors { left: parent.left; leftMargin: 8; verticalCenter: parent.verticalCenter }
+                spacing: 6
 
                 Repeater {
-                    model: Hyprland.workspaces.values
-                    delegate: Rectangle {
-                        required property var modelData
-                        property bool isActive: Hyprland.focusedWorkspace?.id === modelData.id
-                        width: wsLabel.implicitWidth + 20  // Increased padding
-                        height: 34  // Increased from 28 to 34
-                        radius: 8   // Increased from 6 to 8
-                        color: isActive ? "#ffdd33" : Qt.rgba(1,1,1,0.04)
-                        Text {
-                            id: wsLabel
+                    model: workspaceModel
+                    delegate: Item {
+                        required property int index
+                        required property int num
+                        required property string name
+                        required property bool focused
+                        property bool isActive: focused
+
+                        width: 28
+                        height: 34
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        Rectangle {
+                            id: mainDot
                             anchors.centerIn: parent
-                            text: modelData.name
-                            color: parent.isActive ? "#181818" : "#c6c6c6"
-                            font.family: "JetBrainsMono Nerd Font"
-                            font.pixelSize: 16  // Increased from 14 to 16
-                            font.bold: parent.isActive
+                            width:  isActive ? 16 : 8
+                            height: isActive ? 12 : width
+                            radius: height / 2
+                            color:  isActive ? "#ffdd33" : "#888888"
+                            
+                            Behavior on width { NumberAnimation { duration: 100 } }
+                            Behavior on height { NumberAnimation { duration: 100 } }
                         }
+
+                        // Workspace number label (shows on hover)
+                        Text {
+                            id: wsNumber
+                            anchors.centerIn: parent
+                            text: num
+                            color: "#e4e4ef"
+                            font.family: "JetBrainsMono Nerd Font"
+                            font.pixelSize: 10
+                            opacity: 0
+                            
+                            Behavior on opacity { NumberAnimation { duration: 150 } }
+                        }
+
+                        Process {
+                            id: wsSwitch
+                            running: false
+                            property int target: 1
+                            command: ["swaymsg", "workspace", "number", String(target)]
+                        }
+
                         MouseArea {
+                            id: wsMouse
                             anchors.fill: parent
-                            onClicked: modelData.activate()
+                            hoverEnabled: true
+                            onClicked: {
+                                wsSwitch.target = num
+                                wsSwitch.running = true
+                            }
                             cursorShape: Qt.PointingHandCursor
+                            onEntered: {
+                                mainDot.opacity = 0.7
+                                wsNumber.opacity = 1
+                            }
+                            onExited: {
+                                mainDot.opacity = 1
+                                wsNumber.opacity = 0
+                            }
                         }
                     }
                 }
@@ -334,9 +398,9 @@ ShellRoot {
             // CENTER: Clock — click opens control center
             Rectangle {
                 anchors.centerIn: parent
-                height: 36  // Increased from 30 to 36
-                width: clockText.implicitWidth + 28  // Increased from 24 to 28
-                radius: 8   // Increased from 6 to 8
+                height: 36
+                width: clockText.implicitWidth + 28
+                radius: 8
                 color: controlCenter.open ? Qt.rgba(1, 0.87, 0.2, 0.12) : "transparent"
 
                 Text {
@@ -344,7 +408,7 @@ ShellRoot {
                     anchors.centerIn: parent
                     color: "#ffdd33"
                     font.family: "JetBrainsMono Nerd Font"
-                    font.pixelSize: 17  // Increased from 15 to 17
+                    font.pixelSize: 17
                     font.bold: true
                     text: "\uf017  " + Qt.formatDateTime(clock.date, "HH:mm  \u2022  ddd dd MMM")
                 }
@@ -361,7 +425,7 @@ ShellRoot {
             // RIGHT: Stats + bell + tray
             Row {
                 anchors { right: parent.right; rightMargin: 20; verticalCenter: parent.verticalCenter }
-                spacing: 10  // inter-module gap
+                spacing: 10
 
                 // Temp
                 Row {
@@ -389,7 +453,6 @@ ShellRoot {
                     anchors.verticalCenter: parent.verticalCenter
                     width: btRow.implicitWidth
                     height: btRow.implicitHeight
-                    visible: bar.btOn || true  // always show so user knows BT state
 
                     Row {
                         id: btRow
@@ -398,9 +461,9 @@ ShellRoot {
 
                         Text {
                             text: bar.btIcon
-                            color: !bar.btOn      ? "#555555"  // off — greyed
-                                 : bar.btConnected ? "#5fafff"  // connected — blue
-                                 :                   "#95a99f"  // on, no device
+                            color: !bar.btOn      ? "#555555"
+                                 : bar.btConnected ? "#5fafff"
+                                 :                   "#95a99f"
                             font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter
                         }
                         Text {
@@ -411,7 +474,6 @@ ShellRoot {
                         }
                     }
 
-                    // Bluetooth tooltip
                     Rectangle {
                         id: btTooltip
                         visible: btHover.containsMouse
@@ -431,7 +493,6 @@ ShellRoot {
                         }
                     }
 
-                    Process { id: btcProc; running: false; command: ["ghostty", "-e", "bluetui"] }
                     MouseArea {
                         id: btHover
                         anchors.fill: parent
@@ -477,36 +538,26 @@ ShellRoot {
                         }
                     }
 
-                    // Tooltip showing SSID / connection type on hover
                     Rectangle {
                         id: netTooltip
                         visible: netHover.containsMouse && bar.netSSID !== ""
                         z: 100
-                        anchors {
-                            top: parent.bottom
-                            horizontalCenter: parent.horizontalCenter
-                            topMargin: 6
-                        }
+                        anchors { top: parent.bottom; horizontalCenter: parent.horizontalCenter; topMargin: 6 }
                         width: netTipText.implicitWidth + 16
                         height: netTipText.implicitHeight + 10
-                        color: "#181818"
-                        border.color: "#303030"
-                        border.width: 1
-                        radius: 6
-
+                        color: "#181818"; border.color: "#303030"; border.width: 1; radius: 6
                         Text {
                             id: netTipText
                             anchors.centerIn: parent
                             text: bar.netType === "wifi"
                                 ? bar.netIcon + "  " + bar.netSSID + "  •  " + bar.netVal
-                                : "\udb82\udcf1  Ethernet"   // 󰛱 ethernet icon
+                                : "\udb82\udcf1  Ethernet"
                             color: "#e4e4ef"
-                            font.family: "JetBrainsMono Nerd Font"
-                            font.pixelSize: 14
+                            font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 14
                         }
                     }
 
-                    Process { id: nmtuiProc; running: false; command: ["ghostty", "-e", "nmtui"] }
+                    Process { id: nmtuiProc; running: false; command: ["foot", "-e", "nmtui"] }
 
                     MouseArea {
                         id: netHover
@@ -532,11 +583,11 @@ ShellRoot {
                             property var sink: Pipewire.defaultAudioSink
                             property int vol: (!sink || !sink.audio) ? 0 : Math.round(sink.audio.volume * 100)
                             text: (!sink || !sink.audio) ? "\uf026"
-                                : sink.audio.muted     ? "\uf6a9"   // nf-fa-volume_mute
-                                : vol === 0            ? "\uf026"   // nf-fa-volume_off
-                                : vol < 33             ? "\uf027"   // nf-fa-volume_down (low)
-                                : vol < 66             ? "\uf027"   // medium
-                                :                        "\uf028"   // nf-fa-volume_up (high)
+                                : sink.audio.muted     ? "\uf6a9"
+                                : vol === 0            ? "\uf026"
+                                : vol < 33             ? "\uf027"
+                                : vol < 66             ? "\uf027"
+                                :                        "\uf028"
                             color: (!sink || !sink.audio || sink.audio.muted) ? "#ff5555" : "#e4e4ef"
                             font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter
                             MouseArea {
@@ -554,17 +605,15 @@ ShellRoot {
                             font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter
                         }
 
-                        // BT audio indicator — shown when default sink is a bluetooth device
                         Text {
                             visible: bar.audioOnBt
-                            text: "\uf293"   // nf-fa-bluetooth
+                            text: "\uf293"
                             color: "#5fafff"
                             font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 13
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }
 
-                    // Volume hover tooltip showing sink name
                     Rectangle {
                         id: volTooltip
                         visible: volHover.containsMouse
@@ -591,7 +640,6 @@ ShellRoot {
                         anchors.fill: parent
                         hoverEnabled: true
                         acceptedButtons: Qt.NoButton
-                        // Scroll wheel to change volume
                         onWheel: wheel => {
                             const s = Pipewire.defaultAudioSink
                             if (s && s.audio) {
@@ -636,11 +684,11 @@ ShellRoot {
                         anchors.centerIn: parent
                         text: "\uf0f3"
                         color: notifCenter.open ? "#ffdd33" :
-                               notifServer.trackedNotifications.count > 0 ? "#e4e4ef" : "#555555"
+                               notifHistory.count > 0 ? "#e4e4ef" : "#555555"
                         font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 16
                     }
                     Rectangle {
-                        visible: !notifCenter.open && notifServer.trackedNotifications.count > 0
+                        visible: !notifCenter.open && notifHistory.count > 0
                         width: 8; height: 8; radius: 4; color: "#ff5555"
                         anchors { top: parent.top; right: parent.right; topMargin: 2; rightMargin: 2 }
                     }

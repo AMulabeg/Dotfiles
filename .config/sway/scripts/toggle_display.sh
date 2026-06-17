@@ -1,105 +1,40 @@
 #!/bin/bash
 
-if swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/dev/null && \
-   swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-6" and .active)' >/dev/null; then
-    # If DP-3 is connected, disable eDP-1 and enable DP-3 and DP-4
-    swaymsg output eDP-1 disable
+# Helper: get the port name for a connected monitor by model name
+get_output() {
+    swaymsg -t get_outputs | jq -r --arg model "$1" \
+        '.[] | select(.model == $model and .active) | .name' | head -1
+}
 
-    # Configure DP-4 (left monitor)
-    swaymsg output DP-6 position 1920 0
-    swaymsg output DP-6 mode 1920x1080@164.966Hz enable
-    swaymsg workspace 1 output DP-6
-    swaymsg workspace 2 output DP-6
-    swaymsg workspace 3 output DP-6
+DELL_4K=$(get_output "DELL U2718Q")
+IIYAMA=$(get_output "PL2492H")
+LAPTOP=$(get_output "0x573D")
 
-    swaymsg output DP-5 position 3840 0
-    swaymsg output DP-5 mode 1920x1080@59.940Hz enable
-    swaymsg workspace 4 output DP-5
-    swaymsg workspace 5 output DP-5
-    swaymsg workspace 6 output DP-5
+echo "Detected: Dell4K=$DELL_4K, Iiyama=$IIYAMA, Laptop=$LAPTOP"
 
-    swaymsg output HDMI-A-1 position 0 0
+if [ -n "$DELL_4K" ] && [ -n "$IIYAMA" ]; then
+    # Dell 4K + Iiyama dual-monitor setup
+    [ -n "$LAPTOP" ] && swaymsg output "$LAPTOP" disable
 
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-7" and .active)' >/dev/null; then
-    swaymsg output eDP-1 disable
-    swaymsg output DP-7 position 1920 0
-    swaymsg output DP-7 mode 3840x2160@60.000Hz enable
-    swaymsg output DP-7 scale 2.0
+    # Iiyama on the left, rotated 90 degrees — in portrait it becomes 1080 wide x 1920 tall
+    swaymsg output "$IIYAMA" transform 270
+    swaymsg output "$IIYAMA" mode 1920x1080@60.000Hz enable
+    swaymsg output "$IIYAMA" position 0 0
+    swaymsg workspace 4 output "$IIYAMA"
+    swaymsg workspace 5 output "$IIYAMA"
+    swaymsg workspace 6 output "$IIYAMA"
 
-    swaymsg workspace 1 output DP-7
-    swaymsg workspace 2 output DP-7
-    swaymsg workspace 3 output DP-7
+    # Dell 4K to the right of Iiyama — starts at x=1080 (Iiyama's width after rotation)
+    swaymsg output "$DELL_4K" transform normal
+    swaymsg output "$DELL_4K" mode 3840x2160@59.996Hz enable
+    swaymsg output "$DELL_4K" scale 1.5
+    swaymsg output "$DELL_4K" position 1080 0
+    swaymsg workspace 1 output "$DELL_4K"
+    swaymsg workspace 2 output "$DELL_4K"
+    swaymsg workspace 3 output "$DELL_4K"
 
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-8" and .active)' >/dev/null; then
-    swaymsg output eDP-1 disable
-    swaymsg output DP-8 position 1920 0
-    swaymsg output DP-8 mode 3840x2160@60.000Hz enable
-    swaymsg output DP-8 scale 2.0
-
-    swaymsg workspace 1 output DP-7
-    swaymsg workspace 2 output DP-7
-    swaymsg workspace 3 output DP-7
-
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-5" and .active)' >/dev/null; then
-    swaymsg output eDP-1 disable
-    swaymsg output DP-5 position 1920 0
-    swaymsg output DP-5 mode 3840x2160@60.000Hz enable
-    swaymsg output DP-5 scale 2.0
-    swaymsg workspace 1 output DP-5
-    swaymsg workspace 2 output DP-5
-    swaymsg workspace 3 output DP-5
-
-
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-7" and .active)' >/dev/null && \
-   swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-8" and .active)' >/dev/null; then
-    swaymsg output eDP-1 disable
-
-    # Configure DP-4 (left monitor)
-    swaymsg output DP-8 position 0 0
-    swaymsg output DP-8 mode 1920x1080@119.880Hz enable
-    swaymsg workspace 1 output DP-8
-    swaymsg workspace 2 output DP-8
-    swaymsg workspace 3 output DP-8
-
-    # Configure DP-3 (right monitor)
-    swaymsg output DP-7 position 1920 0
-    swaymsg output DP-7 mode 1920x1080@59.940Hz enable
-    swaymsg workspace 4 output DP-7
-    swaymsg workspace 5 output DP-7
-    swaymsg workspace 6 output DP-7
-
-    swaymsg output HDMI-A-1 position -1920 0
-   
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-2" and .active)' >/dev/null; then
-    swaymsg workspace 4 output eDP-1
-    swaymsg workspace 5 output eDP-1
-    swaymsg workspace 6 output eDP-1
-    swaymsg workspace 1 output DP-2
-    swaymsg workspace 2 output DP-2
-    swaymsg workspace 4 output DP-2
-
-    swaymsg output eDP-1 disable
-
-    swaymsg output HDMI-A-1 position -1920 0
-
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-4" and .active)' >/dev/null; then
-    # If DP-3 is connected, disable eDP-1 and enable DP-3
-    swaymsg output eDP-1 disable
-    swaymsg output DP-4 mode 1920x1080@119.993Hz enable
-
-elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "DP-3" and .active)' >/dev/null; then
-    swaymsg output eDP-1 disable
-    swaymsg output DP-3 mode 3440x1440@99.982Hz enable
-    swaybg -i /home/amulabeg/Dotfiles/.config/wallpapers/4kzen.jpg 
-    
- elif swaymsg -t get_outputs | jq -e '.[] | select(.name == "HDMI-A-1" and .active)' >/dev/null; then
-    swaymsg output eDP-1 disable
-    swaymsg output HDMI-A-1 mode 3840x2160@60.000Hz enable
-    swaymsg output HDMI-A-1 scale 1.5
-   
 
 else
-    # If DP-3 is not connected, enable eDP-1 and disable DP-3
-    swaymsg output eDP-1 enable
+    # Laptop only fallback
+    [ -n "$LAPTOP" ] && swaymsg output "$LAPTOP" enable
 fi
-

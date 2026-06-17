@@ -55,8 +55,7 @@ PanelWindow {
 
                 // Auto-dismiss
                 Timer {
-                    interval: (notification.expireTimeout > 0 && notification.expireTimeout < 30000)
-                              ? notification.expireTimeout : 5000
+                    interval: 2000
                     running: true
                     onTriggered: notification.expire()
                 }

@@ -1,6 +1,5 @@
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 import QtQuick
@@ -11,11 +10,11 @@ PanelWindow {
     property bool open: false
     property bool dnd: false
     property var server
-    property var osd: null       // OsdIndicator; injected from shell.qml
+    property var osd: null
     property real brightness: 1.0
 
-    // Which monitor is focused and whether it's internal
-    property string focusedMonitorName: Hyprland.focusedMonitor ? Hyprland.focusedMonitor.name : ""
+    // Injected from shell.qml (bar.focusedMonitorName)
+    property string focusedMonitorName: ""
     property bool isInternalMonitor: focusedMonitorName.startsWith("eDP") || focusedMonitorName.startsWith("LVDS")
 
     anchors { top: true; left: true; right: true }
@@ -51,7 +50,6 @@ PanelWindow {
                         else { controlCenter.brightness = brightnessRead.cur / v; brightnessRead.cur = -1 }
                     }
                 } else {
-                    // ddcutil returns "current max" e.g. "75 100"
                     const parts = t.split(" ")
                     if (parts.length >= 2) {
                         const cur = parseInt(parts[0]), max = parseInt(parts[1])
@@ -63,12 +61,10 @@ PanelWindow {
         }
     }
 
-    // Re-read brightness whenever the focused monitor changes or panel opens
     onFocusedMonitorNameChanged: brightnessRead.running = true
     onOpenChanged: { if (open) { brightnessRead.running = true; btRead.running = true; ppRead.running = true } }
     Component.onCompleted: brightnessRead.running = true
 
-    // Write brightness to the correct monitor
     Process {
         id: brightnessWrite
         running: false
@@ -78,46 +74,29 @@ PanelWindow {
             : ["ddcutil", "setvcp", "10", String(Math.round(targetPct * 100)), "--display", "1"]
     }
 
-    // For external monitors, map Hyprland monitor name to ddcutil display index
-    // ddcutil uses --display 1, 2 etc. We detect by listing and matching
-    Process {
-        id: ddcutilDetect
-        running: false
-        property string output: ""
-        command: ["sh", "-c", "ddcutil detect --brief 2>/dev/null | grep -E 'Display|Model' | paste - -"]
-        stdout: SplitParser {
-            onRead: data => ddcutilDetect.output += data + "\n"
-        }
-        onRunningChanged: {
-            if (!running && ddcutilDetect.output !== "") {
-                // Try to match monitor name from Hyprland to ddcutil display number
-                const lines = ddcutilDetect.output.split("\n")
-                for (let i = 0; i < lines.length; i++) {
-                    const m = lines[i].match(/Display\s+(\d+)/)
-                    if (m) {
-                        // Update brightnessWrite with correct display index
-                        brightnessWrite.command = [
-                            "ddcutil", "setvcp", "10",
-                            String(Math.round(brightnessWrite.targetPct * 100)),
-                            "--display", m[1]
-                        ]
-                        break
-                    }
-                }
-                ddcutilDetect.output = ""
-            }
-        }
-    }
-
-    Process { id: lockProc;  running: false; command: ["loginctl", "lock-session"] }
+    Process { id: lockProc;  running: false; command: ["swaylock"] }
     Process { id: sleepProc; running: false; command: ["systemctl", "suspend"] }
+
+    property bool inhibitSleep: false
+
+    Process {
+        id: inhibitProc
+        running: false
+        command: ["sh", "-c", "systemd-inhibit --what=sleep --who=Quickshell --why='No Sleep' --mode=block sleep infinity & echo $! > /tmp/qs-nosleep.pid"]
+        onRunningChanged: { if (!running) controlCenter.inhibitSleep = true }
+    }
+    Process {
+        id: uninhibitProc
+        running: false
+        command: ["sh", "-c", "kill $(cat /tmp/qs-nosleep.pid 2>/dev/null) 2>/dev/null; rm -f /tmp/qs-nosleep.pid"]
+        onRunningChanged: { if (!running) controlCenter.inhibitSleep = false }
+    }
 
     // ── Bluetooth ────────────────────────────────────────────────────────────
     property bool bluetoothEnabled: false
 
     Process {
-        id: btRead
-        running: true
+        id: btRead; running: true
         command: ["bluetoothctl", "show"]
         stdout: SplitParser {
             onRead: data => {
@@ -126,10 +105,8 @@ PanelWindow {
             }
         }
     }
-
     Process {
-        id: btToggle
-        running: false
+        id: btToggle; running: false
         property bool targetState: false
         command: ["bluetoothctl", "power", targetState ? "on" : "off"]
         onRunningChanged: { if (!running) btRead.running = true }
@@ -139,20 +116,14 @@ PanelWindow {
     property string powerProfile: "balanced"
 
     Process {
-        id: ppRead
-        running: true
+        id: ppRead; running: true
         command: ["powerprofilesctl", "get"]
         stdout: SplitParser {
-            onRead: data => {
-                const t = data.trim()
-                if (t !== "") controlCenter.powerProfile = t
-            }
+            onRead: data => { const t = data.trim(); if (t !== "") controlCenter.powerProfile = t }
         }
     }
-
     Process {
-        id: ppWrite
-        running: false
+        id: ppWrite; running: false
         property string target: "balanced"
         command: ["powerprofilesctl", "set", target]
         onRunningChanged: { if (!running) ppRead.running = true }
@@ -168,7 +139,6 @@ PanelWindow {
         border.color: "#2a2a2a"
         border.width: 1
         clip: true
-        opacity: 1
 
         Column {
             id: ccContent
@@ -176,7 +146,7 @@ PanelWindow {
             anchors.margins: 16
             spacing: 14
 
-            // Header with monitor name
+            // Header
             Row {
                 width: parent.width
                 Text {
@@ -199,12 +169,9 @@ PanelWindow {
 
             // Volume
             Column {
-                width: parent.width
-                spacing: 6
-
+                width: parent.width; spacing: 6
                 Row {
                     width: parent.width; spacing: 8
-
                     Text {
                         property var sink: Pipewire.defaultAudioSink
                         text: (!sink || !sink.audio) ? "\uf028" : sink.audio.muted ? "\uf075f" : "\uf028"
@@ -223,7 +190,6 @@ PanelWindow {
                         color: "#888888"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter
                     }
                 }
-
                 Rectangle {
                     width: parent.width; height: 6; radius: 3; color: "#2a2a2a"
                     Rectangle {
@@ -245,23 +211,11 @@ PanelWindow {
 
             // Brightness
             Column {
-                width: parent.width
-                spacing: 6
-
+                width: parent.width; spacing: 6
                 Row {
                     width: parent.width; spacing: 8
-
-                    Text {
-                        text: "\uf185"
-                        color: "#ffdd33"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 16
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    Text {
-                        text: "Brightness"
-                        color: "#e4e4ef"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                    // Show (DDC) label for external monitors
+                    Text { text: "\uf185"; color: "#ffdd33"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "Brightness"; color: "#e4e4ef"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     Text {
                         text: controlCenter.isInternalMonitor ? "" : "(DDC)"
                         color: "#444444"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 10
@@ -271,11 +225,9 @@ PanelWindow {
                     Item { width: parent.width - (controlCenter.isInternalMonitor ? 165 : 205); height: 1 }
                     Text {
                         text: Math.round(controlCenter.brightness * 100) + "%"
-                        color: "#888888"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12
-                        anchors.verticalCenter: parent.verticalCenter
+                        color: "#888888"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter
                     }
                 }
-
                 Rectangle {
                     width: parent.width; height: 6; radius: 3; color: "#2a2a2a"
                     Rectangle {
@@ -300,9 +252,7 @@ PanelWindow {
 
             // Power Profiles
             Column {
-                width: parent.width
-                spacing: 6
-
+                width: parent.width; spacing: 6
                 Row {
                     width: parent.width; spacing: 8
                     Text {
@@ -315,25 +265,17 @@ PanelWindow {
                         font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 16
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    Text {
-                        text: "Power Profile"
-                        color: "#e4e4ef"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
+                    Text { text: "Power Profile"; color: "#e4e4ef"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter }
                     Item { width: parent.width - 200; height: 1 }
                     Text {
                         text: controlCenter.powerProfile === "power-saver" ? "Saver"
                             : controlCenter.powerProfile === "performance"  ? "Perf"
                             :                                                 "Balanced"
-                        color: "#888888"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12
-                        anchors.verticalCenter: parent.verticalCenter
+                        color: "#888888"; font.family: "JetBrainsMono Nerd Font"; font.pixelSize: 12; anchors.verticalCenter: parent.verticalCenter
                     }
                 }
-
-                // Three profile pills
                 Row {
                     width: parent.width; spacing: 6
-
                     Repeater {
                         model: [
                             { id: "power-saver",  label: "\uf06c  Saver",    activeColor: "#88cc66" },
@@ -392,6 +334,14 @@ PanelWindow {
                     label: "Sleep"; icon: "\uf186"
                     active: false
                     onToggled: sleepProc.running = true
+                }
+                QuickToggle {
+                    label: "No Sleep"; icon: "\uf06d"
+                    active: controlCenter.inhibitSleep
+                    onToggled: {
+                        if (!controlCenter.inhibitSleep) inhibitProc.running = true
+                        else uninhibitProc.running = true
+                    }
                 }
             }
 

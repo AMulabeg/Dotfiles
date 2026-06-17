@@ -26,6 +26,7 @@ alias fsb='~/scripts/fsb.sh'
 alias fshow='~/scripts/fshow.sh'
 source ~/scripts/fzf-git.sh
 alias hx="helix"
+alias vv='NVIM_APPNAME=nvim-vanila nvim' # LazyVim
 
 
 # Aliases
@@ -130,3 +131,5 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 # opencode
 export PATH=/home/amulabeg/.opencode/bin:$PATH
+
+export PATH=$PATH:/home/amulabeg/.spicetify

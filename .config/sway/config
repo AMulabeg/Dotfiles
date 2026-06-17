@@ -2,21 +2,18 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CU
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 set $mod Mod4
-set $wallpaper ~/.config/wallpapers/656136-final_1.png
+set $wallpaper ~/.config/wallpapers/1297332.jpg
 
 set $term wezterm
-set $browser firefox
+set $browser chromium
 
 
 exec xss-lock -- swaylock
 
 exec --no-startup-id dex --autostart --environment sway
-# exec --no-startup-id blueman-applet
 exec --no-startup-id wlsunset -l 52.48 -L 13.43
-exec --no-startup-id swaync
-# exec --no-startup-id nm-applet --indicator
 exec --no-startup-id autotiling
-exec --no-startup-id ghostty --gtk-single-instance=true --quit-after-last-window-closed=false
+exec --no-startup-id waybar -c ~/.config/waybar/config-simple -s ~/.config/waybar/style-simple.css &
 
 exec --no-startup-id {
   firefox
@@ -87,14 +84,7 @@ mode "resize" {
 }
 
 
-bar {
-  swaybar_command waybar
-}
 
 include ./keybindings
 
-# set $gnome-schema org.gnome.desktop.interface
-#
-# exec_always {
-#     gsettings set $gnome-schema gtk-theme 'AdwaitaDark'
-# }
+
