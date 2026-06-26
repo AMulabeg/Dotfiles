@@ -2,9 +2,9 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CU
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 set $mod Mod4
-set $wallpaper ~/.config/wallpapers/1297332.jpg
+set $wallpaper ~/.config/wallpapers/thinkpad.png
 
-set $term wezterm
+set $term kitty
 set $browser chromium
 
 
@@ -13,42 +13,14 @@ exec xss-lock -- swaylock
 exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id wlsunset -l 52.48 -L 13.43
 exec --no-startup-id autotiling
-exec --no-startup-id waybar -c ~/.config/waybar/config-simple -s ~/.config/waybar/style-simple.css &
+exec --no-startup-id waybar
 
-exec --no-startup-id {
-  firefox
-  zapzap
-  vesktop
-}
 
 font pango:JetBrains Mono NF 15
 
 for_window [class="^.*"] border pixel 2
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
 output * background $wallpaper fill
-
-
-input "2:7:SynPS/2_Synaptics_TouchPad" {
-    accel_profile "adaptive"
-    pointer_accel 1.0
-    dwt enable
-    tap enabled
-    natural_scroll enabled
-    middle_emulation enabled
-    scroll_factor 1.5        # makes scrolling faster
-}
-
-input "1133:45081:Logitech_Wireless_Mouse_MX_Master_2S" {
-    pointer_accel 0.7
-    natural_scroll enabled
-    accel_profile "flat"
-}
-
-input "9639:64108:KSN_M600_V2_Mouse" {
-    pointer_accel 0.1
-    natural_scroll enabled
-    accel_profile "flat"
-}
 
 
 assign [app_id="firefox"] workspace number 1
@@ -83,8 +55,7 @@ mode "resize" {
     bindsym $mod+r mode "default"
 }
 
-
-
 include ./keybindings
+include ./inputs
 
 

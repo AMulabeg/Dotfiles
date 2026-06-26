@@ -10,10 +10,9 @@ DELL_4K=$(get_output "DELL U2718Q")
 IIYAMA=$(get_output "PL2492H")
 LAPTOP=$(get_output "0x573D")
 
-echo "Detected: Dell4K=$DELL_4K, Iiyama=$IIYAMA, Laptop=$LAPTOP"
+echo "Detected: Dell=$DELL_4K, Iiyama=$IIYAMA, Laptop=$LAPTOP"
 
 if [ -n "$DELL_4K" ] && [ -n "$IIYAMA" ]; then
-    # Dell 4K + Iiyama dual-monitor setup
     [ -n "$LAPTOP" ] && swaymsg output "$LAPTOP" disable
 
     # Iiyama on the left, rotated 90 degrees — in portrait it becomes 1080 wide x 1920 tall

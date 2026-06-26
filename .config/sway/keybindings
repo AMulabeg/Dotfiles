@@ -88,6 +88,6 @@ bindsym $mod+d exec --no-startup-id ~/.config/sway/scripts/toggle_display.sh
 bindsym $mod+Shift+a exec --no-startup-id ~/.config/sway/scripts/wlsunset-toggle.sh
 bindsym $mod+b exec --no-startup-id ~/.config/sway/scripts/kill_bar.sh
 
-bindsym $mod+Shift+b exec --no-startup-id wezterm -e bluetui
-bindsym $mod+Shift+w exec --no-startup-id wezterm -e wifitui
+bindsym $mod+Shift+b exec --no-startup-id kitty -e bluetui
+bindsym $mod+Shift+w exec --no-startup-id kitty -e wifitui
 
