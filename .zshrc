@@ -3,7 +3,7 @@ export MOZ_ENABLE_WAYLAND=1
 export WLR_DRM_NO_ATOMIC=1
 
 
-export PATH=$PATH:$(go env GOPATH)/bin
+# export PATH=$PATH:$(go env GOPATH)/bin
 export PATH="$HOME/.cargo/bin:$PATH"
 tmux="TERM=screen-256color-bce tmux"
 
@@ -18,26 +18,31 @@ source ~/scripts/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source ~/scripts/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 source ~/scripts/sudo.plugin.zsh
 autoload -U compinit && compinit
-alias fsb='~/scripts/fsb.sh'
-alias fshow='~/scripts/fshow.sh'
 source ~/scripts/fzf-git.sh
-alias hx="helix"
-alias vv='NVIM_APPNAME=nvim-vanila nvim' # LazyVim
-
 
 # Aliases
 alias weather='curl wttr.in/Berlin'
 alias fonts='wezterm ls-fonts --list-system | fzf'
-alias givepassword='security find-generic-password -wa' alias ipaddress='ifconfig | grep -A 5 en0 | grep "inet " | cut -f2 -d " "' # User configuration export MANPATH="/usr/local/man:$MANPATH"
+alias givepassword='security find-generic-password -wa' 
+alias ipaddress='ifconfig | grep -A 5 en0 | grep "inet " | cut -f2 -d " "' # User configuration export MANPATH="/usr/local/man:$MANPATH"
 alias kys="sudo shutdown -h now"
 alias f="fastfetch -c neofetch"
 alias ls="eza --color=always --git --icons=never --no-time --no-user --no-permissions"
-alias oo="cd ~/Documents/Obsidian"
+alias ol="cd ~/Documents/Life Vault"
+alias ou="cd ~/Documents/Uni Vault"
+alias od="cd ~/Documents/Dev Vault"
 alias y="yazi"
 alias l='eza -lah'
 alias p="paru"
 alias v="nvim"
 alias t="tmux"
+alias fsb='~/scripts/fsb.sh'
+alias fshow='~/scripts/fshow.sh'
+alias hx="helix"
+alias vv='NVIM_APPNAME="nvim-vanila" nvim' # LazyVim
+alias lv='NVIM_APPNAME="lazy-nvim" nvim' # LazyVim
+alias wm='workmux'
+
 
 
 
@@ -129,3 +134,5 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export PATH=/home/amulabeg/.opencode/bin:$PATH
 
 export PATH=$PATH:/home/amulabeg/.spicetify
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"

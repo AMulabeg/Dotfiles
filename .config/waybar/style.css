@@ -1,3 +1,5 @@
+@import "colors.css";
+
 * {
   font-family: "JetBrainsMono Nerd Font", monospace;
   font-size: 20px;
@@ -11,8 +13,8 @@
 
 /* Bar */
 window#waybar {
-  background: #1e1e1e;
-  color: #ffffff;
+  background: @base;
+  color: @text;
   transition: background-color 0.5s;
 }
 
@@ -48,67 +50,67 @@ window#waybar.hidden {
 
 /* Workspaces */
 #workspaces button {
-  padding: 5px 8px;
+  padding: 5px 10px;
   background-color: transparent;
-  color: #ffffff;
+  color: @text;
 }
 
 #workspaces button:hover {
-  background-color: #3a3a3a;
+  background-color: @surface;
 }
 
 #workspaces button.focused {
-  background-color: #4c566a;
-  color: #88c0d0;
-  box-shadow: inset 0 -3px #88c0d0;
+  background-color: @surface;
+  color: @accent;
+  /* box-shadow: inset 0 -3px @accent; */
 }
 
 #workspaces button.urgent {
-  background-color: #b54f4f;
+  background-color: @red;
 }
 
 /* Battery */
 #battery.critical:not(.charging) {
-  background-color: #b54f4f;
+  background-color: @red;
   animation: blink 0.5s linear infinite alternate;
 }
 
 /* Network */
 #network.disconnected {
-  background-color: #b54f4f;
+  background-color: @red;
 }
 
 /* Audio */
 #pulseaudio.muted {
-  background-color: #3b3f51;
-  color: #b5b4e2;
+  background-color: @muted-bg;
+  color: @muted-fg;
 }
 
 /* Tray */
 #tray {
-  color: #282a36;
+  color: @base;
 }
 
 #tray > .passive {
   -gtk-icon-effect: dim;
-  color: #6272a4;
+  color: @overlay;
 }
 
 #tray > .needs-attention {
-  background-color: #ff5555;
-  color: #ffffff;
+  background-color: @red;
+  color: @text;
 }
 
 /* Idle inhibitor */
 #idle_inhibitor.activated {
-  background-color: #b5b4e2;
-  color: #3b3f51;
+  background-color: @muted-fg;
+  color: @muted-bg;
 }
 
 /* Blink animation */
 @keyframes blink {
   to {
-    background-color: #ffffff;
-    color: #3b3f51;
+    background-color: @text;
+    color: @muted-bg;
   }
 }

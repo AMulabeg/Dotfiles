@@ -2,18 +2,23 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CU
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 set $mod Mod4
-set $wallpaper ~/.config/wallpapers/thinkpad.png
+set $wallpaper ~/.config/wallpapers/810777.jpg
 
 set $term kitty
 set $browser chromium
 
 
-exec xss-lock -- swaylock
+# exec swayidle -w \
+#         timeout 120 'swaylock' \
+#         timeout 130 'swaymsg "output * power off"' \
+#              resume 'swaymsg "output * power on"' \
+#         before-sleep 'swaylock'
 
 exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id wlsunset -l 52.48 -L 13.43
-exec --no-startup-id autotiling
+# exec --no-startup-id autotiling
 exec --no-startup-id waybar
+exec --no-startup-id swaync
 
 
 font pango:JetBrains Mono NF 15

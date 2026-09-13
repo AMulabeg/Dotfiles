@@ -1,12 +1,11 @@
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Hyprland
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
 // ── AppLauncher ──────────────────────────────────────────────────────────────
-// Rofi-style application launcher for Quickshell / Hyprland.
+// Rofi-style application launcher for Quickshell / Sway.
 //
 // Usage from shell.qml:
 //   AppLauncher { id: appLauncher }
@@ -14,8 +13,8 @@ import QtQuick.Layouts
 // Toggle open/close via IPC:
 //   quickshell ipc call launcher toggle
 //
-// Bind a key in Hyprland (hyprland.conf):
-//   bind = SUPER, D, exec, quickshell ipc call launcher toggle
+// Bind a key in Sway (sway/keybindings):
+//   bindsym $mod+d exec quickshell ipc call launcher toggle
 // ─────────────────────────────────────────────────────────────────────────────
 
 PanelWindow {
@@ -33,14 +32,6 @@ PanelWindow {
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
     color: "transparent"
-
-    // ── Focus grab — close on outside click ─────────────────────────────────
-    HyprlandFocusGrab {
-        id: grab
-        active: root.open
-        windows: [root]
-        onCleared: root.open = false
-    }
 
     // ── IPC Handler for keybindings ─────────────────────────────────────────
     IpcHandler {

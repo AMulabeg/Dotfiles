@@ -1,0 +1,16 @@
+/**
+ *
+ * Gruber Darker colors
+ * Based on the Gruber Darker colorscheme by Jason Blevins
+ *
+ * Colors
+ **/
+
+* {
+    background:     #181818FF;
+    background-alt: #333333FF;
+    foreground:     #E4E4EFFF;
+    selected:       #FFB964FF;
+    active:         #73C936FF;
+    urgent:         #F43753FF;
+}

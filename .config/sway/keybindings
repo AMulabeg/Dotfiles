@@ -17,7 +17,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle 
 
 # Screenshots
-bindsym $mod+m exec --no-startup-id sh -c 'grim ~/Pictures/$(date +%s_grim.png)'
+bindsym $mod+m exec --no-startup-id sh -c 'grim ~/Pictures/$(date +%s_grim.png'
 bindsym $mod+n exec --no-startup-id grim -g "$(slurp)" -| wl-copy 
 
 
@@ -86,8 +86,8 @@ bindsym $mod+Shift+0 move container to workspace number 10
 # Custom Scrips
 bindsym $mod+d exec --no-startup-id ~/.config/sway/scripts/toggle_display.sh
 bindsym $mod+Shift+a exec --no-startup-id ~/.config/sway/scripts/wlsunset-toggle.sh
-bindsym $mod+b exec --no-startup-id ~/.config/sway/scripts/kill_bar.sh
+bindsym $mod+Shift+b exec --no-startup-id ~/.config/sway/scripts/kill_bar.sh
 
-bindsym $mod+Shift+b exec --no-startup-id kitty -e bluetui
+bindsym $mod+b exec --no-startup-id kitty -e bluetui
 bindsym $mod+Shift+w exec --no-startup-id kitty -e wifitui
 

@@ -1,90 +1,135 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# ── layout ──────────────────────────────────────────────
+# left: just cwd + the character (color carries all the signal)
+# right: everything else, quiet, out of the way until it matters
+add_newline = false
+
 format = """
-[$directory](bold cyan)($git_branch$git_state$git_status$git_metrics)
-$os$python[»](bold green) """
+$directory$character"""
 
-[git_branch]
-style = "bold green"
-format = "[\\[[$symbol$branch$tag](bold green)\\]](bold white)"
-symbol = "\ue725 "
+right_format = """
+$git_branch$git_status$cmd_duration$battery$python$nodejs$rust$lua$java$docker_context$package$time"""
 
-[git_status]
-format = ' ([\[$conflicted$deleted$renamed$modified$staged$untracked$ahead_behind\]]($style))'
+palette = "mocha"
+
+[palettes.mocha]
+base   = "#6c7086"  # muted grey — default ink
+mint   = "#94e2d5"  # clean git / success
+amber  = "#f9e2af"  # dirty git
+red    = "#f38ba8"  # errors / low battery
+blue   = "#89b4fa"  # vim-normal mode
+dim    = "#45475a"  # time, barely-there
+
+# ── prompt character ────────────────────────────────────
+# the only thing that ever changes color on the left; that's the point
+[character]
+success_symbol = "[∴](bold mint)"
+error_symbol = "[∴](bold red)"
+vimcmd_symbol = "[∴](bold blue)"
+vimcmd_replace_one_symbol = "[∴](bold blue)"
+vimcmd_replace_symbol = "[∴](bold blue)"
+vimcmd_visual_symbol = "[∴](bold amber)"
 
 [directory]
-style = "bold cyan"
+style = "bold base"
+format = "[$path]($style) "
 truncate_to_repo = false
 truncation_length = 1
 fish_style_pwd_dir_length = 1
 
+# ── git: quiet by default, only speaks up when dirty ────
+[git_branch]
+style = "base"
+format = "[⎇ $branch]($style)"
+
+[git_status]
+style = "amber"
+format = '[ $conflicted$stashed$deleted$renamed$modified$staged$untracked$ahead_behind]($style)'
+conflicted = "✕"
+stashed = "≡"
+deleted = "✕"
+renamed = "»"
+modified = "!"
+staged = "+"
+untracked = "?"
+ahead = "↑${count}"
+behind = "↓${count}"
+diverged = "↕${ahead_count}${behind_count}"
+
+[cmd_duration]
+min_time = 3000
+format = " [$duration]($style)"
+style = "dim"
+
+[battery]
+display = [{ threshold = 20, style = "bold red" }]
+format = " [$symbol$percentage]($style)"
+full_symbol = "󰁹"
+charging_symbol = "󰂄"
+discharging_symbol = "󰁾"
+
+# ── toolchain hints: tiny, monochrome, no version noise ──
 [python]
 disabled = false
 pyenv_version_name = false
 python_binary = 'python'
-format = '[${symbol}(\($virtualenv\))]($style)'
-style = "fg:#a48989"
-symbol = "• 󱔎 "
-
-
-[java]
-disabled = false
-symbol = "•  "
-format = '[${symbol}]($style)'
-style = "fg:#a48989"
-
-[lua]
-disabled = false
-symbol = "•  "
-format = '[${symbol}]($style)'
-style = "fg:#a48989"
+format = '[ 󱔎($virtualenv )]($style)'
+style = "base"
 
 [nodejs]
 disabled = false
-symbol = "• 󰎙 "
-format = '[${symbol}]($style)'
-style = "fg:#a48989"
-
-[package]
-disabled = false
-symbol = "•  "
-display_private = false
-format = '[${symbol}]($style)'
-style = "fg:#a48989"
-
-[docker_context]
-disabled = false
-symbol = "•  "
-only_with_files = true
-format = '[${symbol}]($style)'
-style = "fg:#a48989"
+format = '[ 󰎙]($style)'
+style = "base"
 
 [rust]
 disabled = false
-symbol = "• 󰰠 "
-format = '[${symbol}]($style)'
-style = "fg:#a48989"
+format = '[ 󰰠]($style)'
+style = "base"
+
+[lua]
+disabled = false
+format = '[ 󰢱]($style)'
+style = "base"
+
+[java]
+disabled = false
+format = '[ ]($style)'
+style = "base"
+
+[docker_context]
+disabled = false
+only_with_files = true
+format = '[ ]($style)'
+style = "base"
+
+[package]
+disabled = false
+display_private = false
+format = '[ ]($style)'
+style = "base"
+
+[time]
+disabled = false
+format = "[  $time]($style)"
+time_format = "%H:%M"
+style = "dim"
+
+[hostname]
+ssh_only = true
+format = "[$hostname]($style) "
+style = "bold red"
+
+[username]
+show_always = false
+style_user = "bold base"
+format = "[$user]($style) "
+
 [ruby]
 disabled = true
 
 [swift]
 disabled = true
 
-[hostname]
-ssh_only = true
-format = "[$hostname]($style)"
-style = "bold white"
-
-[username]
-show_always = true
-style_user = "bold white"
-format = "[$user]($style)"
-
-[time]
-disabled = false
-format = "[$time]($style)"
-time_format = "%H:%M"
-
 [os]
-disabled = false
-format = "$symbol "
-symbols.Arch = "󰣇"
-
+disabled = true

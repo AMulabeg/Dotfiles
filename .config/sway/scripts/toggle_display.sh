@@ -17,7 +17,7 @@ if [ -n "$DELL_4K" ] && [ -n "$IIYAMA" ]; then
 
     # Iiyama on the left, rotated 90 degrees — in portrait it becomes 1080 wide x 1920 tall
     swaymsg output "$IIYAMA" transform 270
-    swaymsg output "$IIYAMA" mode 1920x1080@60.000Hz enable
+    swaymsg output "$IIYAMA" mode 1920x1080@74.973Hz enable
     swaymsg output "$IIYAMA" position 0 0
     swaymsg workspace 4 output "$IIYAMA"
     swaymsg workspace 5 output "$IIYAMA"
