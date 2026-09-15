@@ -24,6 +24,7 @@ exec --no-startup-id swaync
 font pango:JetBrains Mono NF 15
 
 for_window [class="^.*"] border pixel 2
+include /home/amulabeg/Projects/daily-journal/sway.conf
 client.focused #FFFFFF #FFFFFF #000000 #FFFFFF #FFFFFF
 output * background $wallpaper fill
 
@@ -62,5 +63,3 @@ mode "resize" {
 
 include ./keybindings
 include ./inputs
-
-

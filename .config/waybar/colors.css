@@ -1,8 +1,8 @@
-@define-color base #2E3440;
-@define-color text #D8DEE9;
-@define-color accent #88C0D0;
-@define-color surface #3B4252;
-@define-color red #BF616A;
-@define-color muted-bg #3B4252;
-@define-color muted-fg #81A1C1;
-@define-color overlay #4C566A;
+@define-color base #191724;
+@define-color text #e0def4;
+@define-color accent #c4a7e7;
+@define-color surface #1f1d2e;
+@define-color red #eb6f92;
+@define-color muted-bg #1f1d2e;
+@define-color muted-fg #908caa;
+@define-color overlay #26233a;
