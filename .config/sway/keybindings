@@ -24,8 +24,8 @@ bindsym $mod+n exec --no-startup-id grim -g "$(slurp)" -| wl-copy
 # Opening Apps
 bindsym $mod+Return exec kitty
 bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/type-1/launcher.sh
-bindsym $mod+t exec chromium --enable-features=AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoEncoder
-# bindsym $mod+t exec firefox
+# bindsym $mod+t exec chromium --enable-features=AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoEncoder
+bindsym $mod+t exec helium-browser
 
 
 

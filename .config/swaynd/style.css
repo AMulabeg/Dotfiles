@@ -1,0 +1,245 @@
+/* Rose Pine styling shared with Waybar and Rofi. */
+@define-color base #191724;
+@define-color surface #1f1d2e;
+@define-color overlay #26233a;
+@define-color text #e0def4;
+@define-color muted #908caa;
+@define-color accent #c4a7e7;
+@define-color red #eb6f92;
+@define-color gold #f6c177;
+
+:root {
+  --cc-bg: #191724;
+  --noti-bg: 31, 29, 46;
+  --noti-bg-alpha: 0.98;
+  --noti-bg-darker: #191724;
+  --noti-bg-hover: #26233a;
+  --noti-bg-focus: #26233a;
+  --noti-close-bg: #26233a;
+  --noti-close-bg-hover: #c4a7e7;
+  --text-color: #e0def4;
+  --text-color-disabled: #908caa;
+  --bg-selected: #c4a7e7;
+  --notification-icon-size: 48px;
+  --notification-app-icon-size: 16px;
+  --notification-group-icon-size: 28px;
+  --border: 1px solid #26233a;
+  --border-radius: 4px;
+  --notification-shadow: none;
+  --font-size-body: 13px;
+  --font-size-summary: 14px;
+  --hover-transition: background 0.15s ease-in-out;
+  --hover-tranistion: var(--hover-transition);
+}
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+}
+
+notificationwindow,
+blankwindow,
+.blank-window,
+.floating-notifications {
+  background: transparent;
+}
+
+/* Popup notifications */
+.notification-row {
+  background: transparent;
+  outline: none;
+}
+
+.notification-row .notification-background {
+  padding: 4px 8px;
+}
+
+.notification-row .notification-background .notification {
+  background: @surface;
+  border: 1px solid @overlay;
+  border-radius: 4px;
+  box-shadow: none;
+  color: @text;
+}
+
+.notification-row .notification-background .notification.low {
+  border-color: @muted;
+}
+
+.notification-row .notification-background .notification.critical {
+  border-color: @red;
+}
+
+.notification-row .notification-background .notification .notification-default-action {
+  padding: 6px;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: @text;
+}
+
+.notification-row .notification-background .notification .notification-default-action:hover {
+  background: @overlay;
+}
+
+.notification-row .notification-background .notification .notification-content {
+  padding: 0;
+}
+
+.notification-row .notification-background .notification .summary {
+  color: @text;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.notification-row .notification-background .notification .body {
+  color: @text;
+  font-size: 13px;
+}
+
+.notification-row .notification-background .notification .time {
+  color: @muted;
+  font-size: 12px;
+}
+
+.close-button {
+  min-width: 22px;
+  min-height: 22px;
+  margin-top: 6px;
+  margin-right: 6px;
+  padding: 0;
+  background: @overlay;
+  border: none;
+  border-radius: 100%;
+  color: @text;
+  box-shadow: none;
+}
+
+.close-button:hover {
+  background: @accent;
+  color: @base;
+}
+
+.notification-alt-actions {
+  padding: 4px;
+  background: transparent;
+}
+
+.notification-action > button {
+  margin: 2px;
+  padding: 4px 8px;
+  background: @overlay;
+  border: 1px solid @overlay;
+  border-radius: 3px;
+  color: @text;
+}
+
+.notification-action > button:hover {
+  background: @accent;
+  color: @base;
+}
+
+/* Control center */
+.control-center {
+  background: @base;
+  border: 1px solid @overlay;
+  border-radius: 4px;
+  color: @text;
+}
+
+.control-center .control-center-list,
+.control-center .control-center-list-placeholder {
+  background: transparent;
+}
+
+.control-center .control-center-list-placeholder {
+  color: @muted;
+}
+
+.widget {
+  margin: 6px 8px;
+  padding: 8px;
+  background: @surface;
+  border: 1px solid @overlay;
+  border-radius: 4px;
+  color: @text;
+}
+
+.widget-title > label,
+.widget-inhibitors > label {
+  color: @accent;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+button {
+  padding: 4px 8px;
+  background: @surface;
+  border: 1px solid @overlay;
+  border-radius: 3px;
+  color: @text;
+}
+
+button:hover {
+  background: @overlay;
+  color: @accent;
+}
+
+.widget-dnd switch {
+  background: @overlay;
+  border: 1px solid @muted;
+  border-radius: 3px;
+}
+
+.widget-dnd switch:checked {
+  background: @accent;
+}
+
+.widget-dnd switch slider {
+  background: @text;
+  border-radius: 2px;
+}
+
+.widget-buttons-grid flowboxchild > button.toggle:checked {
+  background: @accent;
+  color: @base;
+}
+
+entry {
+  background: @base;
+  border: 1px solid @overlay;
+  border-radius: 3px;
+  color: @text;
+  caret-color: @accent;
+}
+
+scale trough {
+  background: @overlay;
+  border-radius: 2px;
+}
+
+scale highlight,
+scale slider {
+  background: @accent;
+}
+
+scrollbar slider {
+  min-width: 5px;
+  min-height: 5px;
+  background: @overlay;
+  border-radius: 0;
+}
+
+.widget-mpris .widget-mpris-player {
+  margin: 8px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay {
+  padding: 12px;
+  background: alpha(@base, 0.9);
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay button:hover {
+  background: @overlay;
+}

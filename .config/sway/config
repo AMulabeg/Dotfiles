@@ -2,10 +2,10 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CU
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 set $mod Mod4
-set $wallpaper ~/.config/wallpapers/810777.jpg
+set $wallpaper /home/amulabeg/.config/wallpapers/tutututut.jpg
 
 set $term kitty
-set $browser chromium
+set $browser helium-browser
 
 
 # exec swayidle -w \
@@ -18,7 +18,7 @@ exec --no-startup-id dex --autostart --environment sway
 exec --no-startup-id wlsunset -l 52.48 -L 13.43
 # exec --no-startup-id autotiling
 exec --no-startup-id waybar
-exec --no-startup-id swaync
+exec --no-startup-id swaync --config /home/amulabeg/.config/swaynd/config.json --style /home/amulabeg/.config/swaynd/style.css
 
 
 font pango:JetBrains Mono NF 15
@@ -32,15 +32,15 @@ output * background $wallpaper fill
 assign [app_id="firefox"] workspace number 1
 assign [app_id="chromium"] workspace number 1
 assign [app_id="brave"] workspace number 1
-assign [app_id="zapzap"] workspace number 3
-assign [app_id="vesktop"] workspace number 4
+assign [app_id="whatsie"] workspace number 3
+assign [app_id="discord"] workspace number 4
 assign [instance="spotify"] workspace number 5
 assign [instance="IntelliJ"] workspace number 3
 
 for_window [app_id="floorp"] focus
 for_window [app_id="thorium-browser"] focus
-for_window [app_id="zapzap"] focus
-for_window [app_id="vesktop"] focus
+for_window [app_id="whatsie"] focus
+for_window [app_id="discord"] focus
 for_window [class="Spotify"] focus
 for_window [class="IntelliJ"] focus
 

@@ -42,6 +42,9 @@ alias hx="helix"
 alias vv='NVIM_APPNAME="nvim-vanila" nvim' # LazyVim
 alias lv='NVIM_APPNAME="lazy-nvim" nvim' # LazyVim
 alias wm='workmux'
+alias pi-p='pi-tmux popup "$PWD"'
+alias pi-s='pi-tmux split "$PWD"'
+alias pi-w='pi-tmux window "$PWD"'
 
 
 
@@ -136,3 +139,8 @@ export PATH=/home/amulabeg/.opencode/bin:$PATH
 export PATH=$PATH:/home/amulabeg/.spicetify
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.config/emacs/bin:$PATH"
+
+# Pi
+export PATH="/home/amulabeg/.local/share/pi-node/node-v22.23.2-linux-x64/bin:$PATH"
+export PATH=$PATH:~/.spicetify
+export PATH=$PATH:~/.spicetify
