@@ -1,135 +1,50 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# ── layout ──────────────────────────────────────────────
-# left: just cwd + the character (color carries all the signal)
-# right: everything else, quiet, out of the way until it matters
-add_newline = false
-
 format = """
-$directory$character"""
-
-right_format = """
-$git_branch$git_status$cmd_duration$battery$python$nodejs$rust$lua$java$docker_context$package$time"""
-
-palette = "mocha"
-
-[palettes.mocha]
-base   = "#6c7086"  # muted grey — default ink
-mint   = "#94e2d5"  # clean git / success
-amber  = "#f9e2af"  # dirty git
-red    = "#f38ba8"  # errors / low battery
-blue   = "#89b4fa"  # vim-normal mode
-dim    = "#45475a"  # time, barely-there
-
-# ── prompt character ────────────────────────────────────
-# the only thing that ever changes color on the left; that's the point
-[character]
-success_symbol = "[∴](bold mint)"
-error_symbol = "[∴](bold red)"
-vimcmd_symbol = "[∴](bold blue)"
-vimcmd_replace_one_symbol = "[∴](bold blue)"
-vimcmd_replace_symbol = "[∴](bold blue)"
-vimcmd_visual_symbol = "[∴](bold amber)"
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$python\
+$character"""
 
 [directory]
-style = "bold base"
-format = "[$path]($style) "
-truncate_to_repo = false
-truncation_length = 1
-fish_style_pwd_dir_length = 1
+style = "blue"
 
-# ── git: quiet by default, only speaks up when dirty ────
+[character]
+success_symbol = "[](purple)"
+error_symbol = "[](red)"
+vimcmd_symbol = "[](green)"
+
 [git_branch]
-style = "base"
-format = "[⎇ $branch]($style)"
+format = "[$branch]($style)"
+style = "bright-black"
 
 [git_status]
-style = "amber"
-format = '[ $conflicted$stashed$deleted$renamed$modified$staged$untracked$ahead_behind]($style)'
-conflicted = "✕"
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
 stashed = "≡"
-deleted = "✕"
-renamed = "»"
-modified = "!"
-staged = "+"
-untracked = "?"
-ahead = "↑${count}"
-behind = "↓${count}"
-diverged = "↕${ahead_count}${behind_count}"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
 
 [cmd_duration]
-min_time = 3000
-format = " [$duration]($style)"
-style = "dim"
+format = "[$duration]($style) "
+style = "yellow"
 
-[battery]
-display = [{ threshold = 20, style = "bold red" }]
-format = " [$symbol$percentage]($style)"
-full_symbol = "󰁹"
-charging_symbol = "󰂄"
-discharging_symbol = "󰁾"
-
-# ── toolchain hints: tiny, monochrome, no version noise ──
 [python]
-disabled = false
-pyenv_version_name = false
-python_binary = 'python'
-format = '[ 󱔎($virtualenv )]($style)'
-style = "base"
-
-[nodejs]
-disabled = false
-format = '[ 󰎙]($style)'
-style = "base"
-
-[rust]
-disabled = false
-format = '[ 󰰠]($style)'
-style = "base"
-
-[lua]
-disabled = false
-format = '[ 󰢱]($style)'
-style = "base"
-
-[java]
-disabled = false
-format = '[ ]($style)'
-style = "base"
-
-[docker_context]
-disabled = false
-only_with_files = true
-format = '[ ]($style)'
-style = "base"
-
-[package]
-disabled = false
-display_private = false
-format = '[ ]($style)'
-style = "base"
-
-[time]
-disabled = false
-format = "[  $time]($style)"
-time_format = "%H:%M"
-style = "dim"
-
-[hostname]
-ssh_only = true
-format = "[$hostname]($style) "
-style = "bold red"
-
-[username]
-show_always = false
-style_user = "bold base"
-format = "[$user]($style) "
-
-[ruby]
-disabled = true
-
-[swift]
-disabled = true
-
-[os]
-disabled = true
+format = "[$virtualenv]($style) "
+style = "bright-black"
+detect_extensions = []
+detect_files = []
